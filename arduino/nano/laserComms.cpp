@@ -2,6 +2,7 @@
 
 
 char lightSensePin = A7;
+int laserPin = 4;
 
 
 /******************************************************************************
@@ -37,7 +38,6 @@ void readInBuffer( int buffSize ) {
 void printToLaser( void ) {
     //Variable Definitions
     int pulseTime = 20;
-    int laserPin = 4;
 
     // wait untl
     if (Serial.available()) {
@@ -84,13 +84,7 @@ void setup() {
 int main() {
     setup();
     while(true) {
-
-
-
-
-
-
-
+        printToLaser();
     }
     return 0;
 }
