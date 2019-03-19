@@ -1,0 +1,32 @@
+# ---------------------------------------------------
+#    Name: Konrad Staniszewski, Andrew Rooney
+#    ID: 1531593, 1496508
+#    CMPUT 275, W 2018
+#    Final Project
+# ---------------------------------------------------
+
+Wiring:
+    Board Pin <---> Arduino Pin
+    ===========================
+
+    LASER WIRING:
+    GND             GND
+
+
+Running Instructions:
+    1.
+
+
+Required Files:
+    README
+
+
+Functions Defined:
+
+
+
+Notes and Assumptions:
+    Usefull Links:
+        http://circuit.ucsd.edu/~yhk/ece154c-spr17/pdfs/ErrorCorrectionI.pdf
+        https://en.wikipedia.org/wiki/Hamming(7,4)
+        http://homepages.math.uic.edu/~leon/mcs425-s08/handouts/Hamming.pdf
