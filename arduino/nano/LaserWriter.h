@@ -4,27 +4,23 @@
 using namespace std;
 
 
-// define laser related variables
-const int laserPin = 8;
-
-
 /******************************************************************************
  *  @brief: readInBuffer
  *  reads input from the laser into a buffer
  *****************************************************************************/
-class laserWriter {
+class LaserWriter {
 public:
-    laserWriter(const int pulsePeriod); // constructor
-    ~laserWriter(); // destructor
+    LaserWriter(const int pulsePeriod, const int laserPin); // constructor
+    ~LaserWriter(); // destructor
 
     // reads from Serial.read() until newline and returns string
-    String readInMessage();
+    String readFromUser();
     // outputs message to laser
     void outputMessage(const String message);
 
 private:
     int pulsePeriod;
+    int laserPin;
 }
-
 
 #endif
