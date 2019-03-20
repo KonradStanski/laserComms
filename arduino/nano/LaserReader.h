@@ -1,9 +1,7 @@
 #ifndef _LASERREADER_H_
 #define _LASERREADER_H_
 
-
-
-using namespace std;
+#include <Arduino.h>
 
 
 // define laserReader class
@@ -19,6 +17,6 @@ public:
 
 private:
     int pulsePeriod;
-}
+};
 
 #endif

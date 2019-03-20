@@ -1,8 +1,8 @@
 #ifndef _LASERWRITER_H_
 #define _LASERWRITER_H_
 
-using namespace std;
 
+#include <Arduino.h>
 
 /******************************************************************************
  *  @brief: readInBuffer
@@ -10,17 +10,18 @@ using namespace std;
  *****************************************************************************/
 class LaserWriter {
 public:
-    LaserWriter(const int pulsePeriod, const int laserPin); // constructor
+    int pulsePeriod;
+    int laserPin;
+
+
+    LaserWriter(int recvPulsePeriod, int recvLaserPin); // constructor
     ~LaserWriter(); // destructor
 
     // reads from Serial.read() until newline and returns string
-    String readFromUser();
-    // outputs message to laser
-    void outputMessage(const String message);
+    void readFromUser();
 
-private:
-    int pulsePeriod;
-    int laserPin;
-}
+    // outputs message to laser
+    void outputMessage(String message);
+};
 
 #endif
