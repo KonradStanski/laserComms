@@ -9,7 +9,7 @@
 #include "LaserWriter.h"
 #include "SensorReader.h"
 
-
+// pin definitions
 char lightSensePin = A7;
 int laserPin = 4;
 char sensorPin = A7;
@@ -25,12 +25,7 @@ void setup() {
     digitalWrite(laserPin, LOW);
 }
 
-
-
-
-
-
-
+// main running function
 int main() {
     setup();
     //Instanciate a laser writer and a sensor reader

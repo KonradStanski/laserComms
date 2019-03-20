@@ -6,20 +6,31 @@
 # ---------------------------------------------------
 
 Wiring:
-    Board Pin <---> Arduino Pin
+    Misc Pin <---> Arduino Pin
     ===========================
 
     LASER WIRING:
     GND             GND
+    LASER 5V        4
+    Sensor          A7
 
 
 Running Instructions:
-    1.
+    1. Wire a voltage divider from 5V to the sensor pin
+    2. wire the other pins as described in the wiring diagram
+    3. Make the project
+
 
 
 Required Files:
     README
-
+    /Arduino
+        Makefile
+        laserComms.cpp
+        LaserWriter.h
+        LaserWriter.cpp
+        SensorReader.h
+        SensorReader.cpp
 
 Functions Defined:
 

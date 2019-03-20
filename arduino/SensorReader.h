@@ -20,8 +20,8 @@ public:
     SensorReader(char recvSensorPin, int recvPulsePeriod); // constructor
     ~SensorReader(); // destructor
 
-    void readInBuffer(int bufferSize); // read in a buffer of sensor size
-
+    // read in a buffer of sensor size
+    void readInBuffer(int bufferSize);
 
 private:
 	char sensorPin;
