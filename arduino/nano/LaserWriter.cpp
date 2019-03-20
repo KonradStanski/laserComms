@@ -8,20 +8,31 @@
 #include "LaserWriter.h"
 #include <Arduino.h>
 
-// constructor
+
+/******************************************************************************
+ *  @brief: LaserWriter // constructor //
+ *  instantiate LaserWriter instance
+ *****************************************************************************/
 LaserWriter::LaserWriter(int recvLaserPin, int recvPulsePeriod){
     pulsePeriod = recvPulsePeriod;
     laserPin = recvLaserPin;
 }
 
-// destructor
+
+/******************************************************************************
+ *  @brief: LaserWriter // destructor //
+ *  destruct LaserWriter instance
+ *****************************************************************************/
 LaserWriter::~LaserWriter(){
 }
 
-// read message from terminal
+
+/******************************************************************************
+ *  @brief: readFromUser()
+ *  read a character from screen and output it to the laser
+ *****************************************************************************/
 void LaserWriter::readFromUser() {
-    //Variable Definitions
-    // wait untl
+    // wait until available
     if (Serial.available()) {
         char inChar = Serial.read(); // read in character
         Serial.print("typed: ");
@@ -48,6 +59,11 @@ void LaserWriter::readFromUser() {
     }
 }
 
+
+/******************************************************************************
+ *  @brief: outPutMessage
+ *  Given a message, write it to the laser.
+ *****************************************************************************/
 void LaserWriter::outputMessage(String message) {
 
 }

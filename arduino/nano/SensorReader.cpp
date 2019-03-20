@@ -8,15 +8,24 @@
 #include "SensorReader.h"
 #include <Arduino.h>
 
-// constructor
+
+/******************************************************************************
+ *  @brief: SensorReader // constructor //
+ *  Instanciate SensorReader instance
+ *****************************************************************************/
 SensorReader::SensorReader(char recvSensorPin, int recvPulsePeriod) {
 	sensorPin = recvSensorPin;
 	pulsePeriod = recvPulsePeriod;
 }
 
-// destructor
+
+/******************************************************************************
+ *  @brief: SensorReader // destructor //
+ *  Destruc insance of SensorReader
+ *****************************************************************************/
 SensorReader::~SensorReader() {
 }
+
 
 /******************************************************************************
  *  @brief: readInBuffer

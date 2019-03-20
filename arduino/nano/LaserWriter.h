@@ -10,9 +10,10 @@
 
 #include <Arduino.h>
 
+
 /******************************************************************************
- *  @brief: readInBuffer
- *  reads input from the laser into a buffer
+ *  @brief: LaserWriter
+ *  Class used to interact with the laser
  *****************************************************************************/
 class LaserWriter {
 public:

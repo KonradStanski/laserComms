@@ -11,7 +11,10 @@
 #include <Arduino.h>
 
 
-// define laserReader class
+/******************************************************************************
+ *  @brief: SensorReader
+ *  Class used to interact with the sensor
+ *****************************************************************************/
 class SensorReader {
 public:
     SensorReader(char recvSensorPin, int recvPulsePeriod); // constructor
