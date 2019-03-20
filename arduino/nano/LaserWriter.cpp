@@ -1,8 +1,15 @@
+/*# ---------------------------------------------------
+#    Name: Konrad Staniszewski, Andrew Rooney
+#    ID: 1531593, 1496508
+#    CMPUT 275, W 2018
+#    Final Project: Laser Communications
+# ---------------------------------------------------*/
+
 #include "LaserWriter.h"
 #include <Arduino.h>
 
 // constructor
-LaserWriter::LaserWriter(int recvPulsePeriod, int recvLaserPin){
+LaserWriter::LaserWriter(int recvLaserPin, int recvPulsePeriod){
     pulsePeriod = recvPulsePeriod;
     laserPin = recvLaserPin;
 }

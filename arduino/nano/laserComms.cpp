@@ -1,10 +1,18 @@
+/*# ---------------------------------------------------
+#    Name: Konrad Staniszewski, Andrew Rooney
+#    ID: 1531593, 1496508
+#    CMPUT 275, W 2018
+#    Final Project: Laser Communications
+# ---------------------------------------------------*/
+
 #include <Arduino.h>
-#include "LaserReader.h"
 #include "LaserWriter.h"
+#include "SensorReader.h"
 
 
 char lightSensePin = A7;
 int laserPin = 4;
+char sensorPin = A7;
 int pulsePeriod = 40;
 
 
@@ -18,14 +26,21 @@ void setup() {
 }
 
 
+
+
+
+
+
 int main() {
     setup();
-
-    LaserWriter laser(pulsePeriod, laserPin);
+    //Instanciate a laser writer and a sensor reader
+    LaserWriter laser(laserPin, pulsePeriod);
+    SensorReader sensor(sensorPin, pulsePeriod);
 
     while(true) {
         // running code goes here
-        laser.readFromUser();
+        // laser.readFromUser();
+        sensor.readInBuffer(6);
     }
     return 0;
 }
