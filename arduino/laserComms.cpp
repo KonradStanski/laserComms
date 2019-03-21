@@ -14,6 +14,7 @@ char lightSensePin = A7;
 int laserPin = 4;
 char sensorPin = A7;
 int pulsePeriod = 40;
+int threshold = 600;
 
 
 // Arduino Setup Configuration
@@ -30,7 +31,7 @@ int main() {
     setup();
     //Instanciate a laser writer and a sensor reader
     LaserWriter laser(laserPin, pulsePeriod);
-    SensorReader sensor(sensorPin, pulsePeriod);
+    SensorReader sensor(sensorPin, pulsePeriod, threshold);
 
     while(true) {
         // running code goes here

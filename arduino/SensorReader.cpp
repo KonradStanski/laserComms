@@ -13,9 +13,10 @@
  *  @brief: SensorReader // constructor //
  *  Instanciate SensorReader instance
  *****************************************************************************/
-SensorReader::SensorReader(char recvSensorPin, int recvPulsePeriod, recvSensorThreshold) {
+SensorReader::SensorReader(char recvSensorPin, int recvPulsePeriod, int recvSensorThreshold) {
 	sensorPin = recvSensorPin;
 	pulsePeriod = recvPulsePeriod;
+    threshold = recvSensorThreshold;
 }
 
 
@@ -29,9 +30,29 @@ SensorReader::~SensorReader() {
 
 /******************************************************************************
  *  @brief: readInBuffer
+ *  reads in a binary array of size bufferSize and returns a pointer to a
+    boolean array.
+ *****************************************************************************/
+bool * SensorReader::readInBuffer(int bufferSize) {
+    // init binary array
+    bool binArray[bufferSize] = {false};
+    // fill array with binary values
+    for (int i = 0; i < bufferSize; i++) {
+        int lightRead = analogRead(sensorPin);
+        if (lightRead > threshold) {
+            binArray[i] = true;
+        }
+        delay(pulsePeriod);
+    }
+    return binArray;
+}
+
+
+/******************************************************************************
+ *  @brief: readInBufferOld
  *  reads input from the laser into a buffer
  *****************************************************************************/
-void SensorReader::readInBuffer(int bufferSize) {
+void SensorReader::readInBufferOld(int bufferSize) {
     // Initialize the int ascii val to 0
     int lightRead;
     int readVal = 0;
@@ -49,3 +70,6 @@ void SensorReader::readInBuffer(int bufferSize) {
     Serial.print(" Ascii Char: ");
     Serial.println(char(readVal));
 }
+
+
+

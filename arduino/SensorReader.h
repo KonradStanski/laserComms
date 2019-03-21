@@ -17,15 +17,19 @@
  *****************************************************************************/
 class SensorReader {
 public:
-    SensorReader(char recvSensorPin, int recvPulsePeriod); // constructor
+    SensorReader(char recvSensorPin, int recvPulsePeriod, int recvSensorThreshold); // constructor
     ~SensorReader(); // destructor
 
     // read in a buffer of sensor size
-    void readInBuffer(int bufferSize);
+    void readInBufferOld(int bufferSize);
+
+    // read in a boolean binary array of size bufferSize and return a point to array
+    bool * readInBuffer(int bufferSize);
 
 private:
 	char sensorPin;
     int pulsePeriod;
+    int threshold;
 };
 
 #endif
