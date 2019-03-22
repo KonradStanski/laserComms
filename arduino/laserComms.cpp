@@ -36,10 +36,6 @@ void serialPrintBuffer(char * buffer, int bufferSize) {
     itoa(intVal, buffer, 10);
     Serial.print(" : DEC: ");
     Serial.print(buffer);
-    // convert to binary
-    itoa(intVal, buffer, 2);
-    Serial.print(" : BIN: ");
-    Serial.print(buffer);
     // convert to ascii
     Serial.print(" : ASCII: ");
     Serial.print(char(intVal));
