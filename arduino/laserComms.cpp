@@ -85,27 +85,17 @@ int main() {
     int bufferSize = 8;
     char * buffer;
 
-    bool client = true;
-    bool server = false;
 
     // is serving
-    if (server) {
-        while(true) {
-            if (Serial.available()) {
-                laser.sendHeader();
-                laser.readFromUser();
-                delay(100); // avoid overlap
-            }
+    while(true) {
+        if (Serial.available()) {
+            laser.sendHeader();
+            laser.readFromUser();
+            delay(100); // avoid overlap
         }
-    }
-    // is recieving
-    else if (client) {
-        while(true){
-            // check if header recieved
-            if (sensor.recvHeader()) {
-                buffer = sensor.readInBuffer(bufferSize);
-                serialPrintBuffer(buffer, bufferSize);
-            }
+        if (sensor.recvHeader()) {
+            buffer = sensor.readInBuffer(bufferSize);
+            serialPrintBuffer(buffer, bufferSize);
         }
     }
     return 0;
