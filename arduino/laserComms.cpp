@@ -79,19 +79,30 @@ void setup() {
 int main() {
     setup();
     //Instanciate a laser writer and a sensor reader
-    LaserWriter laser(laserPin, pulsePeriod);
+    LaserWriter laser(laserPin, pulsePeriod-0.05*pulsePeriod); // laser has some on off time
     SensorReader sensor(sensorPin, pulsePeriod, threshold);
 
     // init data
     int bufferSize = 8;
     char * buffer;
 
-    // main loop
-    while(true) {
-        // check if header recieved
-        if (sensor.recvHeader()) {
-            buffer = sensor.readInBuffer(bufferSize);
-            serialPrintBuffer(buffer, bufferSize);
+    // is serving
+    if (server) {
+        while(true) {
+            if (Serial.available()) {
+                laser.sendHeader();
+                laser.readFromUser();
+            }
+        }
+    }
+    // is recieving
+    else if (client) {
+        while(true){
+            // check if header recieved
+            if (sensor.recvHeader()) {
+                buffer = sensor.readInBuffer(bufferSize);
+                serialPrintBuffer(buffer, bufferSize);
+            }
         }
     }
     return 0;
