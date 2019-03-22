@@ -21,7 +21,7 @@ int threshold = 600;
  *  prints the values from a binary char buffer in dec, bin, ascii,
  *****************************************************************************/
 void serialPrintBuffer(char * buffer, int bufferSize) {
-    Serial.print("binary buffer : ");
+    Serial.print("SPrint buffer : ");
     int intVal = 0;
     for (int i = bufferSize-1; i >= 0; i--) {
         if(buffer[i] == '1') {
@@ -85,8 +85,8 @@ int main() {
     int bufferSize = 8;
     char * buffer;
 
-    bool client = false;
-    bool server = true;
+    bool client = true;
+    bool server = false;
 
     // is serving
     if (server) {
