@@ -85,28 +85,14 @@ int main() {
     // init data
     int bufferSize = 8;
     char * buffer;
+
     // main loop
     while(true) {
-        // // test sensor
-        // if (analogRead(sensorPin) > threshold){
-        //     buffer = sensor.readInBuffer(bufferSize);
-        //     int val = btoi(buffer, bufferSize);
-        //     if (val == 255) {
-        //         Serial.println("recv code received");
-        //         buffer = sensor.readInBuffer(bufferSize);
-
-        //     }
-        // }
-
+        // check if header recieved
         if (sensor.recvHeader()) {
             buffer = sensor.readInBuffer(bufferSize);
             serialPrintBuffer(buffer, bufferSize);
         }
-
-
-        // test laser
-
-
     }
     return 0;
 }

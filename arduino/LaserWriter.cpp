@@ -40,7 +40,7 @@ void LaserWriter::readFromUser() {
         Serial.print(", ascii value: ");
         Serial.print((int)inChar);
         Serial.print(", ascii binary value: ");
-        for (int i = 7; i >= 0; i--) { // unsure if this is the right order
+        for (int i = 8; i >= 0; i--) { // unsure if this is the right order
             int bitVal = bitRead((int)inChar, i);
             Serial.print(bitVal);
             if (bitVal) {
@@ -64,6 +64,18 @@ void LaserWriter::readFromUser() {
  *  @brief: outPutMessage
  *  Given a message, write it to the laser.
  *****************************************************************************/
-void LaserWriter::outputMessage(char buffer[], int bufferSize) {
+void LaserWriter::sendBuffer(char buffer[], int bufferSize) {
 
+}
+
+
+/******************************************************************************
+ *  @brief: outPutMessage
+ *  Given a message, write it to the laser.
+ *****************************************************************************/
+void LaserWriter::sendHeader() {
+    for (int i = 0; i < 8; i++) {
+        digitalWrite(laserPin, HIGH);
+        delay(pulsePeriod);
+    }
 }
