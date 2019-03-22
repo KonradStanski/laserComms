@@ -24,7 +24,7 @@ public:
     void readFromUser();
 
 	// outputs message to laser
-	void outputMessage(String message);
+	void outputMessage(char buffer[], int bufferSize);
 
 private:
 	int pulsePeriod;

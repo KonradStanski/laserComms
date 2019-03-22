@@ -20,16 +20,13 @@ public:
     SensorReader(char recvSensorPin, int recvPulsePeriod, int recvSensorThreshold); // constructor
     ~SensorReader(); // destructor
 
-    // read in a buffer of sensor size
-    void readInBufferOld(int bufferSize);
-
-    // read in a boolean binary array of size bufferSize and return a point to array
-    bool * readInBuffer(int bufferSize);
+    char * readInBuffer(int bufferSize); // read in buffer from sensor
+    bool recvHeader(); // returns true if message commence is recieved
 
 private:
-	char sensorPin;
-    int pulsePeriod;
-    int threshold;
+	char sensorPin; // pin to which sensor is atached to
+    int pulsePeriod; // period to wait inbetween receiving signals
+    int threshold; // 10 bit threshold value 0-1024. 600 works well
 };
 
 #endif

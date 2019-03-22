@@ -64,6 +64,6 @@ void LaserWriter::readFromUser() {
  *  @brief: outPutMessage
  *  Given a message, write it to the laser.
  *****************************************************************************/
-void LaserWriter::outputMessage(String message) {
+void LaserWriter::outputMessage(char buffer[], int bufferSize) {
 
 }

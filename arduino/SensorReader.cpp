@@ -14,8 +14,8 @@
  *  Instanciate SensorReader instance
  *****************************************************************************/
 SensorReader::SensorReader(char recvSensorPin, int recvPulsePeriod, int recvSensorThreshold) {
-	sensorPin = recvSensorPin;
-	pulsePeriod = recvPulsePeriod;
+    sensorPin = recvSensorPin;
+    pulsePeriod = recvPulsePeriod;
     threshold = recvSensorThreshold;
 }
 
@@ -30,46 +30,57 @@ SensorReader::~SensorReader() {
 
 /******************************************************************************
  *  @brief: readInBuffer
- *  reads in a binary array of size bufferSize and returns a pointer to a
-    boolean array.
+ *  reads in a char array of '1' or '0' of size bufferSize and
+    returns a pointer to a char array.
+    READS ARRAY IN MSB FIRST
  *****************************************************************************/
-bool * SensorReader::readInBuffer(int bufferSize) {
+char * SensorReader::readInBuffer(int bufferSize) {
+    Serial.print("create buffer : ");
+
     // init binary array
-    bool binArray[bufferSize] = {false};
+    char *buffer = (char*)malloc(sizeof(char[bufferSize]));
     // fill array with binary values
-    for (int i = 0; i < bufferSize; i++) {
+    for (int i = bufferSize-1; i >= 0; i--) {
         int lightRead = analogRead(sensorPin);
         if (lightRead > threshold) {
-            binArray[i] = true;
+            buffer[i] = '1';
+            Serial.print("1");
+            delay(pulsePeriod);
         }
-        delay(pulsePeriod);
+        else {
+            buffer[i] = '0';
+            Serial.print("0");
+            delay(pulsePeriod);
+        }
     }
-    return binArray;
+    Serial.println(" : return");
+    return buffer;
 }
 
 
 /******************************************************************************
- *  @brief: readInBufferOld
- *  reads input from the laser into a buffer
+ *  @brief: recvHeader
+ *  State Machine for checking if a specified header is read in. Currently is
+    set to read in **0xFF**
  *****************************************************************************/
-void SensorReader::readInBufferOld(int bufferSize) {
-    // Initialize the int ascii val to 0
-    int lightRead;
-    int readVal = 0;
-
-    // read in 7 binary values and calculate the equivalent decimal representation
-    for (int i = bufferSize; i >= 0; i--){
-        lightRead = analogRead(sensorPin); // read the pin value
-        if (lightRead > 600) { // trigger if light is hitting the pin
-            readVal += (int) (pow(2, i) + 0.1); // the 0.1 is added because pow returns a double that is rounded down?
+bool SensorReader::recvHeader() {
+    //read in 0xFF
+    // begin reading in code
+    if(analogRead(sensorPin) > threshold) {
+        Serial.println("might recieve code!");
+        for (int i = 0; i < 8; i++) {
+            if (!(analogRead(sensorPin) > threshold)) {
+                // recieved 0
+                Serial.println("received 0 exit cond");
+                return false;
+            }
+            else{
+                // recieved 1
+                delay(pulsePeriod);
+            }
         }
-        delay(pulsePeriod);
+        Serial.println("recieved code!");
+        return true;
     }
-    Serial.print("Integer val: ");
-    Serial.print(readVal);
-    Serial.print(" Ascii Char: ");
-    Serial.println(char(readVal));
+    return false;
 }
-
-
-
