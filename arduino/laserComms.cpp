@@ -12,7 +12,7 @@
 // pin definitions
 int laserPin = 4;
 char sensorPin = A7;
-int pulsePeriod = 200;
+int pulsePeriod = 20;
 int threshold = 600;
 
 
@@ -46,7 +46,6 @@ void serialPrintBuffer(char * buffer, int bufferSize) {
     //done
     Serial.println(" : done");
     Serial.println();
-    return intVal;
 }
 
 
@@ -86,12 +85,16 @@ int main() {
     int bufferSize = 8;
     char * buffer;
 
+    bool client = false;
+    bool server = true;
+
     // is serving
     if (server) {
         while(true) {
             if (Serial.available()) {
                 laser.sendHeader();
                 laser.readFromUser();
+                delay(100); // avoid overlap
             }
         }
     }
