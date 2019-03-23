@@ -68,7 +68,7 @@ bool SensorReader::recvHeader() {
     // begin reading in code
     if(analogRead(sensorPin) > threshold) {
         Serial.println("might recieve code!");
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 2; i++) {
             if (!(analogRead(sensorPin) > threshold)) {
                 // recieved 0
                 Serial.println("received 0 exit cond");

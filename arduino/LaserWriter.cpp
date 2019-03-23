@@ -76,7 +76,7 @@ void LaserWriter::sendBuffer(char buffer[], int bufferSize) {
  *  Given a message, write it to the laser.
  *****************************************************************************/
 void LaserWriter::sendHeader() {
-    for (int i = 0; i < 8; i++) {
+    for (int i = 0; i < 2; i++) {
         digitalWrite(laserPin, HIGH);
         delay(pulsePeriod);
     }
