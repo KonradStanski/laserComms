@@ -13,9 +13,8 @@
  *  @brief: LaserWriter // constructor //
  *  instantiate LaserWriter instance
  *****************************************************************************/
-LaserWriter::LaserWriter(int recvLaserPin, int recvPulsePeriod){
+LaserWriter::LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod){
     pulsePeriod = recvPulsePeriod;
-    pulsePeriodMicro = recvPulsePeriod*1000;
     laserPin = recvLaserPin;
 }
 

@@ -12,7 +12,7 @@
 // pin definitions
 int laserPin = 4;
 char sensorPin = A7;
-int pulsePeriod = 25;
+uint32_t pulsePeriod = 25; //microseconds
 int threshold = 600;
 
 
@@ -74,7 +74,7 @@ void setup() {
 int main() {
     setup();
     //Instanciate a laser writer and a sensor reader
-    LaserWriter laser(laserPin, pulsePeriod); // laser has some on off time????
+    LaserWriter laser(laserPin, pulsePeriod);
     SensorReader sensor(sensorPin, pulsePeriod, threshold);
 
     // init data

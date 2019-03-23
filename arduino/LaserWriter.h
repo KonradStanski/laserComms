@@ -17,7 +17,7 @@
  *****************************************************************************/
 class LaserWriter {
 public:
-    LaserWriter(int recvLaserPin, int recvPulsePeriod); // constructor
+    LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod); // constructor
     ~LaserWriter(); // destructor
 
     // reads from Serial.read() until newline and returns string
@@ -29,8 +29,7 @@ public:
 	void pulseLow();
 
 private:
-	int pulsePeriod;
-	int pulsePeriodMicro;
+	uint32_t pulsePeriod;
 	int laserPin;
 };
 

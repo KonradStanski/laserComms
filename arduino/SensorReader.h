@@ -17,7 +17,7 @@
  *****************************************************************************/
 class SensorReader {
 public:
-    SensorReader(char recvSensorPin, int recvPulsePeriod, int recvSensorThreshold); // constructor
+    SensorReader(char recvSensorPin, uint32_t recvPulsePeriod, int recvSensorThreshold); // constructor
     ~SensorReader(); // destructor
 
     char * readInBuffer(int bufferSize); // read in buffer from sensor
@@ -25,7 +25,7 @@ public:
 
 private:
 	char sensorPin; // pin to which sensor is atached to
-    int pulsePeriod; // period to wait inbetween receiving signals
+    uint32_t pulsePeriod; // period to wait inbetween receiving signals
     int threshold; // 10 bit threshold value 0-1024. 600 works well
 };
 

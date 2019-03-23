@@ -13,7 +13,7 @@
  *  @brief: SensorReader // constructor //
  *  Instanciate SensorReader instance
  *****************************************************************************/
-SensorReader::SensorReader(char recvSensorPin, int recvPulsePeriod, int recvSensorThreshold) {
+SensorReader::SensorReader(char recvSensorPin, uint32_t recvPulsePeriod, int recvSensorThreshold) {
     sensorPin = recvSensorPin;
     pulsePeriod = recvPulsePeriod;
     threshold = recvSensorThreshold;
