@@ -35,8 +35,8 @@ SensorReader::~SensorReader() {
     READS ARRAY IN MSB FIRST
  *****************************************************************************/
 char * SensorReader::readInBuffer(int bufferSize) {
+    delay(pulsePeriod/2); // delay to offset communications
     Serial.print("create buffer : ");
-
     // init binary array
     char *buffer = (char*)malloc(sizeof(char[bufferSize]));
     // fill array with binary values
@@ -79,7 +79,6 @@ bool SensorReader::recvHeader() {
                 delay(pulsePeriod);
             }
         }
-        delay(pulsePeriod/2); // offset reception of signal to to have
         Serial.println("recieved code!");
         return true;
     }

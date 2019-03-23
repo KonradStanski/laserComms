@@ -23,12 +23,14 @@ public:
     // reads from Serial.read() until newline and returns string
     void readFromUser();
 
-	// outputs message to laser
 	void sendBuffer(char buffer[], int bufferSize);
 	void sendHeader();
+	void pulseHigh();
+	void pulseLow();
 
 private:
 	int pulsePeriod;
+	int pulsePeriodMicro;
 	int laserPin;
 };
 
