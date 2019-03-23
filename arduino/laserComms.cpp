@@ -12,7 +12,7 @@
 // pin definitions
 int laserPin = 4;
 char sensorPin = A7;
-uint32_t pulsePeriod = 25; //microseconds
+uint32_t pulsePeriod = 15; //microseconds
 int threshold = 600;
 
 
@@ -44,20 +44,33 @@ void serialPrintBuffer(char * buffer, int bufferSize) {
     Serial.println();
 }
 
+// might be wrong
+// /******************************************************************************
+//  *  @brief: btoi
+//  *  Converts char array consisting of '1's and '0's to an integer value
+//  *****************************************************************************/
+// int btoi(char * buffer, int bufferSize) {
+//     int intVal = 0;
+//     for (int i = bufferSize-1; i >= 0; i--) {
+//         if(buffer[i] == '1') {
+//             intVal += bit(i);
+//         }
+//     }
+//     return intVal;
+// }
 
-/******************************************************************************
- *  @brief: btoi
- *  Converts char array consisting of '1's and '0's to an integer value
- *****************************************************************************/
-int btoi(char * buffer, int bufferSize) {
-    int intVal = 0;
-    for (int i = bufferSize-1; i >= 0; i--) {
-        if(buffer[i] == '1') {
-            intVal += bit(i);
-        }
-    }
-    return intVal;
-}
+// /******************************************************************************
+//  *  @brief: btoi
+//  *  Converts char array consisting of '1's and '0's to an integer value
+//  *****************************************************************************/
+// char * itob(int intVal, int bufferSize) {
+//     for (int i = bufferSize-1; i >= 0; i--) {
+//         if(buffer[i] == '1') {
+//             intVal += bit(i);
+//         }
+//     }
+//     return intVal;
+// }
 
 
 // Arduino Setup Configuration
@@ -78,7 +91,7 @@ int main() {
     SensorReader sensor(sensorPin, pulsePeriod, threshold);
 
     // init data
-    int bufferSize = 8;
+    int charBufferSize = 8;
     char * buffer;
 
 
@@ -87,11 +100,10 @@ int main() {
         if (Serial.available()) {
             laser.sendHeader();
             laser.readFromUser();
-            delay(100); // avoid overlap
         }
         if (sensor.recvHeader()) {
-            buffer = sensor.readInBuffer(bufferSize);
-            serialPrintBuffer(buffer, bufferSize);
+            buffer = sensor.readInBuffer(charBufferSize);
+            serialPrintBuffer(buffer, charBufferSize);
         }
     }
     return 0;

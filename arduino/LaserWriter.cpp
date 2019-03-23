@@ -52,6 +52,7 @@ void LaserWriter::readFromUser() {
         }
         Serial.println(" ");
     }
+    delay(40); // this is necessary to avoid overlap between transmissions
 }
 
 
@@ -60,7 +61,14 @@ void LaserWriter::readFromUser() {
  *  Given a message, write it to the laser.
  *****************************************************************************/
 void LaserWriter::sendBuffer(char buffer[], int bufferSize) {
-
+    for (int i = bufferSize-1; i >= 0; i--) {
+        if (buffer[i] == '1') {
+            pulseHigh();
+        }
+        else {
+            pulseLow();
+        }
+    }
 }
 
 

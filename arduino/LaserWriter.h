@@ -25,6 +25,7 @@ public:
 
 	void sendBuffer(char buffer[], int bufferSize);
 	void sendHeader();
+
 	void pulseHigh();
 	void pulseLow();
 
