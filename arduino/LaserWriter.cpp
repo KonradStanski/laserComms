@@ -29,8 +29,7 @@ LaserWriter::~LaserWriter(){
 
 /******************************************************************************
  *  @brief: readFromUser()
- *  read a character from screen and output it to the laser using big
-    endian transmission this means send the msb first, all the way to the lsb.
+ *  read a character from screen and output it to the laser
  *****************************************************************************/
 void LaserWriter::readFromUser() {
     // wait until available
@@ -58,7 +57,7 @@ void LaserWriter::readFromUser() {
 
 /******************************************************************************
  *  @brief: outPutMessage
- *  Given a message, write it to the laser
+ *  Given a message, write it to the laser.
  *****************************************************************************/
 void LaserWriter::sendBuffer(char buffer[], int bufferSize) {
     for (int i = bufferSize-1; i >= 0; i--) {

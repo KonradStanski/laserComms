@@ -13,7 +13,7 @@
 int laserPin = 4;
 char sensorPin = A7;
 uint32_t pulsePeriod = 5; //microseconds
-int threshold = 600;
+int threshold = 930;
 
 
 /******************************************************************************
@@ -98,7 +98,7 @@ int main() {
     // is serving
     while(true) {
         if (Serial.available()) {
-            delay(40);
+            delay(40); // needed to avoid overlap of signal
             laser.sendHeader();
             laser.readFromUser();
         }
