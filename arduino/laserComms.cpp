@@ -12,7 +12,7 @@
 // pin definitions
 int laserPin = 4;
 char sensorPin = A7;
-uint32_t pulsePeriod = 15; //microseconds
+uint32_t pulsePeriod = 5; //microseconds
 int threshold = 600;
 
 
@@ -98,12 +98,14 @@ int main() {
     // is serving
     while(true) {
         if (Serial.available()) {
+            delay(40);
             laser.sendHeader();
             laser.readFromUser();
         }
         if (sensor.recvHeader()) {
             buffer = sensor.readInBuffer(charBufferSize);
             serialPrintBuffer(buffer, charBufferSize);
+            free(buffer);
         }
     }
     return 0;
