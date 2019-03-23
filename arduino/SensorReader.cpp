@@ -79,6 +79,7 @@ bool SensorReader::recvHeader() {
                 delay(pulsePeriod);
             }
         }
+        delay(pulsePeriod/2); // offset reception of signal to to have
         Serial.println("recieved code!");
         return true;
     }

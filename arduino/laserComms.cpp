@@ -74,7 +74,7 @@ void setup() {
 int main() {
     setup();
     //Instanciate a laser writer and a sensor reader
-    LaserWriter laser(laserPin, pulsePeriod-0.05*pulsePeriod); // laser has some on off time
+    LaserWriter laser(laserPin, pulsePeriod/*-0.05*pulsePeriod*/); // laser has some on off time????
     SensorReader sensor(sensorPin, pulsePeriod, threshold);
 
     // init data
