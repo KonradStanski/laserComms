@@ -28,34 +28,6 @@ LaserWriter::~LaserWriter(){
 
 
 /******************************************************************************
- *  @brief: readFromUser()
- *  read a character from screen and output it to the laser
- *****************************************************************************/
-void LaserWriter::readFromUser() {
-    // wait until available
-    if (Serial.available()) {
-        char inChar = Serial.read(); // read in character
-        Serial.print("typed: ");
-        Serial.print(inChar);
-        Serial.print(", ascii value: ");
-        Serial.print((int)inChar);
-        Serial.print(", ascii binary value: ");
-        for (int i = 7; i >= 0; i--) {
-            int bitVal = bitRead((int)inChar, i);
-            Serial.print(bitVal);
-            if (bitVal) {
-                pulseHigh();
-            }
-            else {
-                pulseLow();
-            }
-        }
-        Serial.println(" ");
-    }
-}
-
-
-/******************************************************************************
  *  @brief: outPutMessage
  *  Given a message, write it to the laser.
  *****************************************************************************/
@@ -97,3 +69,37 @@ void LaserWriter::pulseLow() {
     delay(pulsePeriod);
 }
 
+
+    char * charToHamming(char inChar) {
+
+    }
+
+
+
+
+// /******************************************************************************
+//  *  @brief: readFromUser()
+//  *  read a character from screen and output it to the laser
+//  *****************************************************************************/
+// void LaserWriter::readFromUser() {
+//     // wait until available
+//     if (Serial.available()) {
+//         char inChar = Serial.read(); // read in character
+//         Serial.print("typed: ");
+//         Serial.print(inChar);
+//         Serial.print(", ascii value: ");
+//         Serial.print((int)inChar);
+//         Serial.print(", ascii binary value: ");
+//         for (int i = 7; i >= 0; i--) {
+//             int bitVal = bitRead((int)inChar, i);
+//             Serial.print(bitVal);
+//             if (bitVal) {
+//                 pulseHigh();
+//             }
+//             else {
+//                 pulseLow();
+//             }
+//         }
+//         Serial.println(" ");
+//     }
+// }

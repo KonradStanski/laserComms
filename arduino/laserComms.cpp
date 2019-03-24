@@ -66,7 +66,7 @@ int main() {
     int charBufferSize = 8;
     char * buffer;
 
-
+    // little endian u IN REVERSE ORDER
     char outBuffer[8] = {'1', '0', '1', '0', '1', '1', '1', '0'};
 
 

@@ -29,6 +29,10 @@ public:
 	void pulseHigh();
 	void pulseLow();
 
+
+	char * charToHamming(char inChar);
+
+
 private:
 	uint32_t pulsePeriod;
 	int laserPin;
