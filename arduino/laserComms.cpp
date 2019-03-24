@@ -21,14 +21,14 @@ int threshold = 930;
  *  prints the values from a binary char buffer in dec, bin, ascii,
  *****************************************************************************/
 void serialPrintBuffer(byte * buffer, int bufferSize) {
-    Serial.print("SPrint buffer : ");
+    Serial.print("Print buffer : ");
     int intVal = 0;
     for (int i = 0; i < bufferSize; i++) {
-        if(buffer[i] == 1) {
+        if(buffer[i]) {
             Serial.print(buffer[i]);
             intVal += bit(i);
         }
-        else if (buffer[i] == 0) {
+        else {
             Serial.print(buffer[i]);
         }
     }
