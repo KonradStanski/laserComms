@@ -60,7 +60,7 @@ void LaserWriter::readFromUser() {
  *  Given a message, write it to the laser.
  *****************************************************************************/
 void LaserWriter::sendBuffer(char buffer[], int bufferSize) {
-    for (int i = bufferSize-1; i >= 0; i--) {
+    for (int i = 0; i < bufferSize; i++) {
         if (buffer[i] == '1') {
             pulseHigh();
         }

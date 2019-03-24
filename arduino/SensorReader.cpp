@@ -40,7 +40,7 @@ char * SensorReader::readInBuffer(int bufferSize) {
     // init binary array
     char *buffer = (char*)malloc(sizeof(char[bufferSize]));
     // fill array with binary values
-    for (int i = bufferSize-1; i >= 0; i--) {
+    for (int i = 0; i < bufferSize; i++) {
         int lightRead = analogRead(sensorPin);
         if (lightRead > threshold) {
             buffer[i] = '1';

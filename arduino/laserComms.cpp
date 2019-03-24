@@ -23,7 +23,7 @@ int threshold = 930;
 void serialPrintBuffer(char * buffer, int bufferSize) {
     Serial.print("SPrint buffer : ");
     int intVal = 0;
-    for (int i = bufferSize-1; i >= 0; i--) {
+    for (int i = 0; i < bufferSize; i++) {
         if(buffer[i] == '1') {
             Serial.print(buffer[i]);
             intVal += bit(i);
@@ -67,7 +67,7 @@ int main() {
     char * buffer;
 
 
-    char outBuffer[8] = {'0', '1', '1', '1', '0', '1', '0', '1'};
+    char outBuffer[8] = {'1', '0', '1', '0', '1', '1', '1', '0'};
 
 
     // is serving
