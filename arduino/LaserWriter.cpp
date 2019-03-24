@@ -70,9 +70,47 @@ void LaserWriter::pulseLow() {
 }
 
 
-    char * charToHamming(char inChar) {
-
+char * LaserWriter::charToHam(char inChar) {
+    int xn[8];
+    int intVal = (int)inChar;
+    int p1, p2, p3, p4, p5, p6;
+    // assign buffer
+    char *buffer = (char*)malloc(sizeof(char[14]));
+    for (int i = 0; i < 8; i++) {
+        if (bitRead(intVal, i)) {
+            xn[i] = 1;
+        }
+        else {
+            xn[i] = 0;
+        }
     }
+    // set parity bits for first half
+
+    p1 = xn[3]^xn[2]^xn[0];
+    p2 = xn[3]^xn[1]^xn[0];
+    p3 = xn[2]^xn[1]^xn[0];
+    // set parity bit for second half
+    p4 = xn[7]^xn[6]^xn[4];
+    p5 = xn[7]^xn[5]^xn[4];
+    p6 = xn[6]^xn[5]^xn[4];
+
+    // construct char array
+    buffer[0] = p1 + '0';
+    buffer[1] = p2 + '0';
+    buffer[2] = xn[3] + '0';
+    buffer[3] = p3 + '0';
+    buffer[4] = xn[2] + '0';
+    buffer[5] = xn[1] + '0';
+    buffer[6] = xn[0] + '0';
+    buffer[7] = p4 + '0';
+    buffer[8] = p5 + '0';
+    buffer[9] = xn[7] + '0';
+    buffer[10] = p6 + '0';
+    buffer[11] = xn[6] + '0';
+    buffer[12] = xn[5] + '0';
+    buffer[13] = xn[4] + '0';
+    return buffer;
+}
 
 
 

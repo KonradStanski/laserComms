@@ -30,7 +30,7 @@ public:
 	void pulseLow();
 
 
-	char * charToHamming(char inChar);
+	char * charToHam(char inChar);
 
 
 private:

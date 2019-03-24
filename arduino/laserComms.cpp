@@ -62,12 +62,12 @@ int main() {
     LaserWriter laser(laserPin, pulsePeriod);
     SensorReader sensor(sensorPin, pulsePeriod, threshold);
 
-    // init data
-    int charBufferSize = 8;
     char * buffer;
-
+    int hamBufferSize = 14;
+    // int charBufferSize = 8;
+    // init data
     // little endian u IN REVERSE ORDER
-    char outBuffer[8] = {'1', '0', '1', '0', '1', '1', '1', '0'};
+    // char outBuffer[8] = {'1', '0', '1', '0', '1', '1', '1', '0'};
 
 
     // is serving
@@ -76,47 +76,15 @@ int main() {
             delay(60); // needed to avoid overlap of signal
             laser.sendHeader();
             // laser.readFromUser();
-            Serial.read();
-            laser.sendBuffer(outBuffer, charBufferSize);
+            char inChar = Serial.read();
+            buffer = laser.charToHam(inChar);
+            laser.sendBuffer(buffer, hamBufferSize);
         }
         if (sensor.recvHeader()) {
-            buffer = sensor.readInBuffer(charBufferSize);
-            serialPrintBuffer(buffer, charBufferSize);
+            buffer = sensor.readInBuffer(hamBufferSize);
+            serialPrintBuffer(buffer, hamBufferSize);
             free(buffer);
         }
     }
     return 0;
 }
-
-
-
-
-
-// might be wrong
-// /******************************************************************************
-//  *  @brief: btoi
-//  *  Converts char array consisting of '1's and '0's to an integer value
-//  *****************************************************************************/
-// int btoi(char * buffer, int bufferSize) {
-//     int intVal = 0;
-//     for (int i = bufferSize-1; i >= 0; i--) {
-//         if(buffer[i] == '1') {
-//             intVal += bit(i);
-//         }
-//     }
-//     return intVal;
-// }
-
-// /******************************************************************************
-//  *  @brief: btoi
-//  *  Converts char array consisting of '1's and '0's to an integer value
-//  *****************************************************************************/
-// char * itob(int intVal, int bufferSize) {
-//     for (int i = bufferSize-1; i >= 0; i--) {
-//         if(buffer[i] == '1') {
-//             intVal += bit(i);
-//         }
-//     }
-//     return intVal;
-// }
-
