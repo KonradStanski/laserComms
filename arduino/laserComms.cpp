@@ -44,6 +44,54 @@ void serialPrintBuffer(char * buffer, int bufferSize) {
     Serial.println();
 }
 
+
+// Arduino Setup Configuration
+void setup() {
+    init();
+    Serial.begin(9600);
+    pinMode(sensorPin, INPUT);
+    pinMode(laserPin, OUTPUT);
+    digitalWrite(laserPin, LOW);
+}
+
+
+// main running function
+int main() {
+    setup();
+    //Instanciate a laser writer and a sensor reader
+    LaserWriter laser(laserPin, pulsePeriod);
+    SensorReader sensor(sensorPin, pulsePeriod, threshold);
+
+    // init data
+    int charBufferSize = 8;
+    char * buffer;
+
+
+    char outBuffer[8] = {'0', '1', '1', '1', '0', '1', '0', '1'};
+
+
+    // is serving
+    while(true) {
+        if (Serial.available()) {
+            delay(60); // needed to avoid overlap of signal
+            laser.sendHeader();
+            // laser.readFromUser();
+            Serial.read();
+            laser.sendBuffer(outBuffer, charBufferSize);
+        }
+        if (sensor.recvHeader()) {
+            buffer = sensor.readInBuffer(charBufferSize);
+            serialPrintBuffer(buffer, charBufferSize);
+            free(buffer);
+        }
+    }
+    return 0;
+}
+
+
+
+
+
 // might be wrong
 // /******************************************************************************
 //  *  @brief: btoi
@@ -71,48 +119,4 @@ void serialPrintBuffer(char * buffer, int bufferSize) {
 //     }
 //     return intVal;
 // }
-
-
-// Arduino Setup Configuration
-void setup() {
-    init();
-    Serial.begin(9600);
-    pinMode(sensorPin, INPUT);
-    pinMode(laserPin, OUTPUT);
-    digitalWrite(laserPin, LOW);
-}
-
-
-// main running function
-int main() {
-    setup();
-    //Instanciate a laser writer and a sensor reader
-    LaserWriter laser(laserPin, pulsePeriod);
-    SensorReader sensor(sensorPin, pulsePeriod, threshold);
-
-    // init data
-    int charBufferSize = 8;
-    char * buffer;
-
-
-    char outBuffer[8] = {'0', '1', '0', '1', '0', '1', '0', '1'};
-
-
-    // is serving
-    while(true) {
-        if (Serial.available()) {
-            delay(60); // needed to avoid overlap of signal
-            laser.sendHeader();
-            // laser.readFromUser();
-            Serial.read();
-            laser.sendBuffer(outBuffer, charBufferSize);
-        }
-        if (sensor.recvHeader()) {
-            buffer = sensor.readInBuffer(charBufferSize);
-            serialPrintBuffer(buffer, charBufferSize);
-            free(buffer);
-        }
-    }
-    return 0;
-}
 

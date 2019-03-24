@@ -36,7 +36,7 @@ SensorReader::~SensorReader() {
  *****************************************************************************/
 char * SensorReader::readInBuffer(int bufferSize) {
     delay(pulsePeriod/2); // delay to offset communications
-    Serial.print("create buffer : ");
+    // Serial.print("create buffer : ");
     // init binary array
     char *buffer = (char*)malloc(sizeof(char[bufferSize]));
     // fill array with binary values
@@ -44,16 +44,16 @@ char * SensorReader::readInBuffer(int bufferSize) {
         int lightRead = analogRead(sensorPin);
         if (lightRead > threshold) {
             buffer[i] = '1';
-            Serial.print("1");
+            // Serial.print("1");
             delay(pulsePeriod);
         }
         else {
             buffer[i] = '0';
-            Serial.print("0");
+            // Serial.print("0");
             delay(pulsePeriod);
         }
     }
-    Serial.println(" : return");
+    // Serial.println(" : return");
     return buffer;
 }
 
