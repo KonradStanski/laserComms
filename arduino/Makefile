@@ -9,7 +9,7 @@ endif
 
 # Board Model Tag
 ifndef BOARD_TAG
-BOARD_TAG = nano328
+BOARD_TAG = mega2560
 endif
 
 # Arduino Included Libraries

@@ -28,6 +28,17 @@ SensorReader::~SensorReader() {
 }
 
 
+void SensorReader::unHam(char buffer[], int bufferSize){
+	// getting [p1 p2 x3 p3 x2 x1 x0]
+	bool s1, s2, s3;
+	s1 = atoi(buffer[n+0])^atoi(buffer[n+2])^atoi(buffer[n+4])^atoi(buffer[n+6]);
+	s2 = atoi(buffer[n+2])^atoi(buffer[n+2])^atoi(buffer[n+5])^atoi(buffer[n+6]);
+	s3 = atoi(buffer[n+3])^atoi(buffer[n+4])^atoi(buffer[n+5])^atoi(buffer[n+6]);
+
+
+}
+
+
 /******************************************************************************
  *  @brief: readInBuffer
  *  reads in a char array of '1' or '0' of size bufferSize and
@@ -54,6 +65,7 @@ char * SensorReader::readInBuffer(int bufferSize) {
         }
     }
     // Serial.println(" : return");
+    unHam(buffer, bufferSize);
     return buffer;
 }
 

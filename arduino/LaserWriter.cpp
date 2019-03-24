@@ -68,6 +68,7 @@ void LaserWriter::pulseLow() {
     digitalWrite(laserPin, LOW);
     delay(pulsePeriod);
 }
+<<<<<<< Updated upstream
 
 
     char * charToHamming(char inChar) {
@@ -103,3 +104,5 @@ void LaserWriter::pulseLow() {
 //         Serial.println(" ");
 //     }
 // }
+=======
+>>>>>>> Stashed changes

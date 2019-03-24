@@ -21,6 +21,7 @@ public:
     ~SensorReader(); // destructor
 
     char * readInBuffer(int bufferSize); // read in buffer from sensor
+    void unHam( char* buffer, int bufferSize );
     bool recvHeader(); // returns true if message commence is recieved
 
 private:
