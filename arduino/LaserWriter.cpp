@@ -55,20 +55,6 @@ void LaserWriter::sendHeader() {
 }
 
 
-void LaserWriter::pulseHigh() {
-    // pulse a "1"
-    digitalWrite(laserPin, HIGH);
-    delay(pulsePeriod);
-    digitalWrite(laserPin, LOW);
-}
-
-
-void LaserWriter::pulseLow() {
-    // pulse a "0"
-    digitalWrite(laserPin, LOW);
-    delay(pulsePeriod);
-}
-
 
 char * LaserWriter::charToHam(char inChar) {
     int xn[8];
@@ -85,7 +71,6 @@ char * LaserWriter::charToHam(char inChar) {
         }
     }
     // set parity bits for first half
-
     p1 = xn[3]^xn[2]^xn[0];
     p2 = xn[3]^xn[1]^xn[0];
     p3 = xn[2]^xn[1]^xn[0];
@@ -111,6 +96,22 @@ char * LaserWriter::charToHam(char inChar) {
     buffer[13] = xn[4] + '0';
     return buffer;
 }
+
+
+void LaserWriter::pulseHigh() {
+    // pulse a "1"
+    digitalWrite(laserPin, HIGH);
+    delay(pulsePeriod);
+    digitalWrite(laserPin, LOW);
+}
+
+
+void LaserWriter::pulseLow() {
+    // pulse a "0"
+    digitalWrite(laserPin, LOW);
+    delay(pulsePeriod);
+}
+
 
 
 

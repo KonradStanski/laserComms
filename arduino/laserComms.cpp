@@ -12,7 +12,7 @@
 // pin definitions
 int laserPin = 4;
 char sensorPin = A7;
-uint32_t pulsePeriod = 30; //milliseconds
+uint32_t pulsePeriod = 10; //milliseconds
 int threshold = 930;
 
 
@@ -45,6 +45,29 @@ void serialPrintBuffer(char * buffer, int bufferSize) {
 }
 
 
+void sendHamFromUser(LaserWriter laser) {
+    char * buffer;
+    int hamBufferSize = 14;
+    char inChar = Serial.read();
+    buffer = laser.charToHam(inChar);
+    // send message
+    laser.sendHeader();
+    laser.sendBuffer(buffer, hamBufferSize);
+    serialPrintBuffer(buffer, hamBufferSize);
+    delay(60); // needed to avoid overlap of signal
+    free(buffer);
+}
+
+
+void recvHamFromUser(SensorReader sensor) {
+    char * buffer;
+    int hamBufferSize = 14;
+    buffer = sensor.readInBuffer(hamBufferSize);
+    serialPrintBuffer(buffer, hamBufferSize);
+    free(buffer);
+}
+
+
 // Arduino Setup Configuration
 void setup() {
     init();
@@ -62,28 +85,12 @@ int main() {
     LaserWriter laser(laserPin, pulsePeriod);
     SensorReader sensor(sensorPin, pulsePeriod, threshold);
 
-    char * buffer;
-    int hamBufferSize = 14;
-    // int charBufferSize = 8;
-    // init data
-    // little endian u IN REVERSE ORDER
-    // char outBuffer[8] = {'1', '0', '1', '0', '1', '1', '1', '0'};
-
-
-    // is serving
     while(true) {
         if (Serial.available()) {
-            delay(60); // needed to avoid overlap of signal
-            laser.sendHeader();
-            // laser.readFromUser();
-            char inChar = Serial.read();
-            buffer = laser.charToHam(inChar);
-            laser.sendBuffer(buffer, hamBufferSize);
+            sendHamFromUser(laser);
         }
         if (sensor.recvHeader()) {
-            buffer = sensor.readInBuffer(hamBufferSize);
-            serialPrintBuffer(buffer, hamBufferSize);
-            free(buffer);
+            recvHamFromUser(sensor);
         }
     }
     return 0;
