@@ -31,9 +31,9 @@ LaserWriter::~LaserWriter(){
  *  @brief: outPutMessage
  *  Given a message, write it to the laser.
  *****************************************************************************/
-void LaserWriter::sendBuffer(char buffer[], int bufferSize) {
+void LaserWriter::sendBuffer(byte buffer[], int bufferSize) {
     for (int i = 0; i < bufferSize; i++) {
-        if (buffer[i] == '1') {
+        if (buffer[i] == 1) {
             pulseHigh();
         }
         else {
@@ -56,12 +56,12 @@ void LaserWriter::sendHeader() {
 
 
 
-char * LaserWriter::charToHam(char inChar) {
+byte * LaserWriter::charToHam(char inChar) {
     int xn[8];
     int intVal = (int)inChar;
     int p1, p2, p3, p4, p5, p6;
     // assign buffer
-    char *buffer = (char*)malloc(sizeof(char[14]));
+    byte *buffer = (byte*)malloc(sizeof(byte[14]));
     for (int i = 0; i < 8; i++) {
         if (bitRead(intVal, i)) {
             xn[i] = 1;
@@ -80,20 +80,20 @@ char * LaserWriter::charToHam(char inChar) {
     p6 = xn[6]^xn[5]^xn[4];
 
     // construct char array
-    buffer[0] = p1 + '0';
-    buffer[1] = p2 + '0';
-    buffer[2] = xn[3] + '0';
-    buffer[3] = p3 + '0';
-    buffer[4] = xn[2] + '0';
-    buffer[5] = xn[1] + '0';
-    buffer[6] = xn[0] + '0';
-    buffer[7] = p4 + '0';
-    buffer[8] = p5 + '0';
-    buffer[9] = xn[7] + '0';
-    buffer[10] = p6 + '0';
-    buffer[11] = xn[6] + '0';
-    buffer[12] = xn[5] + '0';
-    buffer[13] = xn[4] + '0';
+    buffer[0] = p1;
+    buffer[1] = p2;
+    buffer[2] = xn[3];
+    buffer[3] = p3;
+    buffer[4] = xn[2];
+    buffer[5] = xn[1];
+    buffer[6] = xn[0];
+    buffer[7] = p4;
+    buffer[8] = p5;
+    buffer[9] = xn[7];
+    buffer[10] = p6;
+    buffer[11] = xn[6];
+    buffer[12] = xn[5];
+    buffer[13] = xn[4];
     return buffer;
 }
 

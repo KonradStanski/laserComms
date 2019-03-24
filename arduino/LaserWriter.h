@@ -20,9 +20,9 @@ public:
     LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod); // constructor
     ~LaserWriter(); // destructor
 
-	void sendBuffer(char buffer[], int bufferSize);
+	void sendBuffer(byte buffer[], int bufferSize);
 	void sendHeader();
-	char * charToHam(char inChar);
+	byte * charToHam(char inChar);
 
 	void pulseHigh();
 	void pulseLow();

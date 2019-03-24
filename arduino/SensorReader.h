@@ -20,7 +20,7 @@ public:
     SensorReader(char recvSensorPin, uint32_t recvPulsePeriod, int recvSensorThreshold); // constructor
     ~SensorReader(); // destructor
 
-    char * readInBuffer(int bufferSize); // read in buffer from sensor
+    byte * readInBuffer(int bufferSize); // read in buffer from sensor
     bool recvHeader(); // returns true if message commence is recieved
 
 private:

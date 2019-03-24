@@ -34,19 +34,19 @@ SensorReader::~SensorReader() {
     returns a pointer to a char array.
     READS ARRAY IN MSB FIRST
  *****************************************************************************/
-char * SensorReader::readInBuffer(int bufferSize) {
+byte * SensorReader::readInBuffer(int bufferSize) {
     delay(pulsePeriod/2); // delay to offset communications
     // init binary array
-    char *buffer = (char*)malloc(sizeof(char[bufferSize]));
+    byte *buffer = (byte*)malloc(sizeof(byte[bufferSize]));
     // fill array with binary values
     for (int i = 0; i < bufferSize; i++) {
         int lightRead = analogRead(sensorPin);
         if (lightRead > threshold) {
-            buffer[i] = '1';
+            buffer[i] = 1;
             delay(pulsePeriod);
         }
         else {
-            buffer[i] = '0';
+            buffer[i] = 0;
             delay(pulsePeriod);
         }
     }

@@ -20,22 +20,21 @@ int threshold = 930;
  *  @brief: serialPrintBuffer
  *  prints the values from a binary char buffer in dec, bin, ascii,
  *****************************************************************************/
-void serialPrintBuffer(char * buffer, int bufferSize) {
+void serialPrintBuffer(byte * buffer, int bufferSize) {
     Serial.print("SPrint buffer : ");
     int intVal = 0;
     for (int i = 0; i < bufferSize; i++) {
-        if(buffer[i] == '1') {
+        if(buffer[i] == 1) {
             Serial.print(buffer[i]);
             intVal += bit(i);
         }
-        else if (buffer[i] == '0') {
+        else if (buffer[i] == 0) {
             Serial.print(buffer[i]);
         }
     }
     // convert to decimal
-    itoa(intVal, buffer, 10);
     Serial.print(" : DEC: ");
-    Serial.print(buffer);
+    Serial.print(intVal);
     // convert to ascii
     Serial.print(" : ASCII: ");
     Serial.print(char(intVal));
@@ -46,7 +45,7 @@ void serialPrintBuffer(char * buffer, int bufferSize) {
 
 
 void sendHamFromUser(LaserWriter laser) {
-    char * buffer;
+    byte * buffer;
     int hamBufferSize = 14;
     char inChar = Serial.read();
     buffer = laser.charToHam(inChar);
@@ -60,7 +59,7 @@ void sendHamFromUser(LaserWriter laser) {
 
 
 void recvHamFromUser(SensorReader sensor) {
-    char * buffer;
+    byte * buffer;
     int hamBufferSize = 14;
     buffer = sensor.readInBuffer(hamBufferSize);
     serialPrintBuffer(buffer, hamBufferSize);
