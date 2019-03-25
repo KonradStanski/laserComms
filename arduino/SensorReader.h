@@ -19,8 +19,8 @@ class SensorReader {
 public:
     SensorReader(char recvSensorPin, uint32_t recvPulsePeriod, int recvSensorThreshold); // constructor
     ~SensorReader(); // destructor
-
-    byte * readInBuffer(int bufferSize); // read in buffer from sensor
+    byte* unHamByte(byte* buffer);
+    byte* readInBuffer(int bufferSize); // read in buffer from sensor
     bool recvHeader(); // returns true if message commence is recieved
 
 private:

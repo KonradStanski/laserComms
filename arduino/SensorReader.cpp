@@ -28,14 +28,22 @@ SensorReader::~SensorReader() {
 }
 
 
-void SensorReader::unHam(char buffer[], int bufferSize){
-	// getting [p1 p2 x3 p3 x2 x1 x0]
-	bool s1, s2, s3;
-	s1 = atoi(buffer[n+0])^atoi(buffer[n+2])^atoi(buffer[n+4])^atoi(buffer[n+6]);
-	s2 = atoi(buffer[n+2])^atoi(buffer[n+2])^atoi(buffer[n+5])^atoi(buffer[n+6]);
-	s3 = atoi(buffer[n+3])^atoi(buffer[n+4])^atoi(buffer[n+5])^atoi(buffer[n+6]);
-
-
+byte* SensorReader::unHamByte(byte * buffer){
+    int bufferSize = 7; // for 7, 4 encoding * 2 nibbles for a byte
+    for(int i = 0; i < 2; i++){
+        bool s1, s2, s3;
+        int n=i*7, res = 0b0;
+        s1 = ((buffer[n+0])^(buffer[n+2])^(buffer[n+4])^buffer[n+6]);
+        s2 = (buffer[n+1])^(buffer[n+2])^(buffer[n+5])^buffer[n+6];
+        s3 = (buffer[n+3])^(buffer[n+4])^(buffer[n+5])^buffer[n+6];
+        res = s1 | (s2 << 1) | (s3 << 2);
+        if(res){
+            buffer[res-1] = !buffer[res-1];
+        }
+    }
+    byte outbuf[] = {buffer[2], buffer[4], buffer[5], buffer[6],\
+        buffer[9], buffer[11], buffer[12], buffer[13]};
+    return outbuf;
 }
 
 
@@ -62,7 +70,7 @@ byte * SensorReader::readInBuffer(int bufferSize) {
         }
     }
     // Serial.println(" : return");
-    unHam(buffer, bufferSize);
+    buffer = unHamByte(buffer);
     return buffer;
 }
 
