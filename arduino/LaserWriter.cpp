@@ -94,6 +94,7 @@ byte * LaserWriter::charToHam(char inChar) {
     buffer[11] = xn[6];
     buffer[12] = xn[5];
     buffer[13] = xn[4];
+    buffer[9] = 1;
     return buffer;
 }
 
