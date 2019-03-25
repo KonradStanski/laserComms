@@ -25,10 +25,12 @@ void serialPrintBuffer(byte * buffer, int bufferSize) {
     int intVal = 0;
     for (int i = 0; i < bufferSize; i++) {
         if(buffer[i]) {
+            // Serial.println("1");
             Serial.print(buffer[i]);
             intVal += bit(i);
         }
         else {
+            // Serial.println("0");
             Serial.print(buffer[i]);
         }
     }
@@ -60,12 +62,15 @@ void sendHamFromUser(LaserWriter laser) {
 
 void recvHamFromUser(SensorReader sensor) {
     byte * buffer;
+    byte * charBuffer;
     int hamBufferSize = 14;
     int charBufferSize = 8;
     buffer = sensor.readInBuffer(hamBufferSize);
-    buffer = sensor.unHamByte(buffer);
-    serialPrintBuffer(buffer, charBufferSize);
+    serialPrintBuffer(buffer, hamBufferSize);
+    charBuffer = sensor.unHamByte(buffer);
+    serialPrintBuffer(charBuffer, charBufferSize);
     free(buffer);
+    free(charBuffer);
 }
 
 

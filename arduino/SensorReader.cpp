@@ -34,7 +34,7 @@ SensorReader::~SensorReader() {
  *  code is able to correct single bit flips. However, multiple bit flips cannot
  *  be handled here.
  *****************************************************************************/
-byte* SensorReader::unHamByte(byte * buffer){
+byte* SensorReader::unHamByte(byte buffer[]){
     int bufferSize = 7; // for 7, 4 encoding * 2 nibbles for a byte
     for(int i = 0; i < 2; i++){
         bool s1, s2, s3;
@@ -45,12 +45,26 @@ byte* SensorReader::unHamByte(byte * buffer){
         s3 = (buffer[n+3])^(buffer[n+4])^(buffer[n+5])^buffer[n+6];
         res = s1 | (s2 << 1) | (s3 << 2);
         if(res){ // toggle the erroneous bit
-            buffer[res-1] = !buffer[res-1];
+            if (buffer[res-1]) {
+                buffer[res-1] = 0/*!buffer[res-1]*/;
+            }
+            else {
+                buffer[res-1] = 1/*!buffer[res-1]*/;
+            }
         }
     }
-    byte outbuf[] = {buffer[2], buffer[4], buffer[5], buffer[6], // fill out the actual payload data
-        buffer[9], buffer[11], buffer[12], buffer[13]};
-    return outbuf;
+    byte *outBuffer = (byte*)malloc(sizeof(byte[8]));
+
+    outBuffer[0] = buffer[6];
+    outBuffer[1] = buffer[5];
+    outBuffer[2] = buffer[4];
+    outBuffer[3] = buffer[2];
+
+    outBuffer[4] = buffer[13];
+    outBuffer[5] = buffer[12];
+    outBuffer[6] = buffer[11];
+    outBuffer[7] = buffer[9];
+    return outBuffer;
 }
 
 
