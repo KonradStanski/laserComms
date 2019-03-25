@@ -45,22 +45,19 @@ void SensorReader::unHam(char buffer[], int bufferSize){
     returns a pointer to a char array.
     READS ARRAY IN MSB FIRST
  *****************************************************************************/
-char * SensorReader::readInBuffer(int bufferSize) {
+byte * SensorReader::readInBuffer(int bufferSize) {
     delay(pulsePeriod/2); // delay to offset communications
-    // Serial.print("create buffer : ");
     // init binary array
-    char *buffer = (char*)malloc(sizeof(char[bufferSize]));
+    byte *buffer = (byte*)malloc(sizeof(byte[bufferSize]));
     // fill array with binary values
     for (int i = 0; i < bufferSize; i++) {
         int lightRead = analogRead(sensorPin);
         if (lightRead > threshold) {
-            buffer[i] = '1';
-            // Serial.print("1");
+            buffer[i] = 1;
             delay(pulsePeriod);
         }
         else {
-            buffer[i] = '0';
-            // Serial.print("0");
+            buffer[i] = 0;
             delay(pulsePeriod);
         }
     }
@@ -79,11 +76,11 @@ bool SensorReader::recvHeader() {
     //read in 0xFF
     // begin reading in code
     if(analogRead(sensorPin) > threshold) {
-        Serial.println("might recieve code!");
+        Serial.println("might recieve header!");
         for (int i = 0; i < 2; i++) {
             if (!(analogRead(sensorPin) > threshold)) {
                 // recieved 0
-                Serial.println("received 0 exit cond");
+                Serial.println("received 0 exit condition");
                 return false;
             }
             else{
@@ -91,7 +88,7 @@ bool SensorReader::recvHeader() {
                 delay(pulsePeriod);
             }
         }
-        Serial.println("recieved code!");
+        Serial.println("recieved header!");
         return true;
     }
     return false;

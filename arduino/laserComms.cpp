@@ -12,7 +12,7 @@
 // pin definitions
 int laserPin = 4;
 char sensorPin = A7;
-uint32_t pulsePeriod = 30; //milliseconds
+uint32_t pulsePeriod = 10; //milliseconds
 int threshold = 930;
 
 
@@ -20,28 +20,50 @@ int threshold = 930;
  *  @brief: serialPrintBuffer
  *  prints the values from a binary char buffer in dec, bin, ascii,
  *****************************************************************************/
-void serialPrintBuffer(char * buffer, int bufferSize) {
-    Serial.print("SPrint buffer : ");
+void serialPrintBuffer(byte * buffer, int bufferSize) {
+    Serial.print("Print buffer : ");
     int intVal = 0;
     for (int i = 0; i < bufferSize; i++) {
-        if(buffer[i] == '1') {
+        if(buffer[i]) {
             Serial.print(buffer[i]);
             intVal += bit(i);
         }
-        else if (buffer[i] == '0') {
+        else {
             Serial.print(buffer[i]);
         }
     }
     // convert to decimal
-    itoa(intVal, buffer, 10);
     Serial.print(" : DEC: ");
-    Serial.print(buffer);
+    Serial.print(intVal);
     // convert to ascii
     Serial.print(" : ASCII: ");
     Serial.print(char(intVal));
     //done
     Serial.println(" : done");
     Serial.println();
+}
+
+
+void sendHamFromUser(LaserWriter laser) {
+    byte * buffer;
+    int hamBufferSize = 14;
+    char inChar = Serial.read();
+    buffer = laser.charToHam(inChar);
+    // send message
+    laser.sendHeader();
+    laser.sendBuffer(buffer, hamBufferSize);
+    serialPrintBuffer(buffer, hamBufferSize);
+    delay(60); // needed to avoid overlap of signal
+    free(buffer);
+}
+
+
+void recvHamFromUser(SensorReader sensor) {
+    byte * buffer;
+    int hamBufferSize = 14;
+    buffer = sensor.readInBuffer(hamBufferSize);
+    serialPrintBuffer(buffer, hamBufferSize);
+    free(buffer);
 }
 
 
@@ -62,61 +84,13 @@ int main() {
     LaserWriter laser(laserPin, pulsePeriod);
     SensorReader sensor(sensorPin, pulsePeriod, threshold);
 
-    // init data
-    int charBufferSize = 8;
-    char * buffer;
-
-    // little endian u IN REVERSE ORDER
-    char outBuffer[8] = {'1', '0', '1', '0', '1', '1', '1', '0'};
-
-
-    // is serving
     while(true) {
         if (Serial.available()) {
-            delay(60); // needed to avoid overlap of signal
-            laser.sendHeader();
-            // laser.readFromUser();
-            Serial.read();
-            laser.sendBuffer(outBuffer, charBufferSize);
+            sendHamFromUser(laser);
         }
         if (sensor.recvHeader()) {
-            buffer = sensor.readInBuffer(charBufferSize);
-            serialPrintBuffer(buffer, charBufferSize);
-            free(buffer);
+            recvHamFromUser(sensor);
         }
     }
     return 0;
 }
-
-
-
-
-
-// might be wrong
-// /******************************************************************************
-//  *  @brief: btoi
-//  *  Converts char array consisting of '1's and '0's to an integer value
-//  *****************************************************************************/
-// int btoi(char * buffer, int bufferSize) {
-//     int intVal = 0;
-//     for (int i = bufferSize-1; i >= 0; i--) {
-//         if(buffer[i] == '1') {
-//             intVal += bit(i);
-//         }
-//     }
-//     return intVal;
-// }
-
-// /******************************************************************************
-//  *  @brief: btoi
-//  *  Converts char array consisting of '1's and '0's to an integer value
-//  *****************************************************************************/
-// char * itob(int intVal, int bufferSize) {
-//     for (int i = bufferSize-1; i >= 0; i--) {
-//         if(buffer[i] == '1') {
-//             intVal += bit(i);
-//         }
-//     }
-//     return intVal;
-// }
-

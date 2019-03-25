@@ -20,17 +20,14 @@ public:
     LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod); // constructor
     ~LaserWriter(); // destructor
 
-    // reads from Serial.read() until newline and returns string
-    void readFromUser();
-
-	void sendBuffer(char buffer[], int bufferSize);
+	void sendBuffer(byte buffer[], int bufferSize);
 	void sendHeader();
+	byte * charToHam(char inChar);
 
 	void pulseHigh();
 	void pulseLow();
 
-
-	char * charToHamming(char inChar);
+    void readFromUser();
 
 
 private:
