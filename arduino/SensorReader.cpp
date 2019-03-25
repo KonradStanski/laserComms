@@ -29,7 +29,7 @@ SensorReader::~SensorReader() {
 
 /******************************************************************************
  *  @brief: unHamByte
- *  Accepts a byte array, and does the math as described in this 
+ *  Accepts a byte array, and does the math as described in this
  *  https://en.wikipedia.org/wiki/Hamming(7,4) article, as suggested by Zac. This
  *  code is able to correct single bit flips. However, multiple bit flips cannot
  *  be handled here.
@@ -48,7 +48,7 @@ byte* SensorReader::unHamByte(byte * buffer){
             buffer[res-1] = !buffer[res-1];
         }
     }
-    byte outbuf[] = {buffer[2], buffer[4], buffer[5], buffer[6],\ // fill out the actual payload data
+    byte outbuf[] = {buffer[2], buffer[4], buffer[5], buffer[6], // fill out the actual payload data
         buffer[9], buffer[11], buffer[12], buffer[13]};
     return outbuf;
 }
@@ -77,7 +77,7 @@ byte * SensorReader::readInBuffer(int bufferSize) {
         }
     }
     // Serial.println(" : return");
-    buffer = unHamByte(buffer);
+    // buffer = unHamByte(buffer);
     return buffer;
 }
 

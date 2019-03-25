@@ -61,8 +61,10 @@ void sendHamFromUser(LaserWriter laser) {
 void recvHamFromUser(SensorReader sensor) {
     byte * buffer;
     int hamBufferSize = 14;
+    int charBufferSize = 8;
     buffer = sensor.readInBuffer(hamBufferSize);
-    serialPrintBuffer(buffer, hamBufferSize);
+    buffer = sensor.unHamByte(buffer);
+    serialPrintBuffer(buffer, charBufferSize);
     free(buffer);
 }
 
