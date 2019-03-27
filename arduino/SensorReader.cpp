@@ -75,7 +75,6 @@ byte* SensorReader::unHamByte(byte buffer[]){
     READS ARRAY IN MSB FIRST
  *****************************************************************************/
 byte * SensorReader::readInBuffer(int bufferSize) {
-    delay(pulsePeriod/2); // delay to offset communications
     // init binary array
     byte *buffer = (byte*)malloc(sizeof(byte[bufferSize]));
     // fill array with binary values
@@ -106,6 +105,7 @@ bool SensorReader::recvHeader() {
     // begin reading in code
     if(analogRead(sensorPin) > threshold) {
         Serial.println("might recieve header!");
+        delay(pulsePeriod/2); // delay to offset communications
         for (int i = 0; i < 2; i++) {
             if (!(analogRead(sensorPin) > threshold)) {
                 // recieved 0
@@ -122,3 +122,43 @@ bool SensorReader::recvHeader() {
     }
     return false;
 }
+
+
+// int SensorReader::recvHeadSize() {
+//     //read in 11 then read in 8 bit buffer size
+//     // begin reading in code
+//     if(analogRead(sensorPin) > threshold) {
+//         Serial.println("might recieve header!");
+//         // read in 11 to start transmission
+//         for (int i = 0; i < 2; i++) {
+//             if (!(analogRead(sensorPin) > threshold)) {
+//                 // recieved 0
+//                 Serial.println("received 0 exit condition");
+//                 return 0;
+//             }
+//             else{
+//                 // recieved 1
+//                 delay(pulsePeriod);
+//             }
+//         }
+//         // delay half period
+//         delay(pulsePeriod/2);
+//         // read in 8 bit integer value little endian for buffer size
+//         int bufferSize = 0;
+//         for(int i = 0; i < 8; i++) {
+//             if (analogRead(sensorPin) > threshold) {
+//                 bufferSize += bit(i);
+//             }
+//             delay(pulsePeriod);
+//         }
+//         // did not read an initial value
+//         Serial.println("recieved header!");
+//         return bufferSize;
+//     }
+//     return 0;
+// }
+
+
+// bool SensorReader::recvTail(byte buffer[], int bufferSize) {
+
+// }
