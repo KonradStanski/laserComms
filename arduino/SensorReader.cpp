@@ -35,7 +35,6 @@ SensorReader::~SensorReader() {
  *  be handled here.
  *****************************************************************************/
 byte* SensorReader::unHamByte(byte buffer[]){
-    int bufferSize = 7; // for 7, 4 encoding * 2 nibbles for a byte
     for(int i = 0; i < 2; i++){
         bool s1, s2, s3;
         int n=i*7, res = 0b0;
@@ -45,12 +44,12 @@ byte* SensorReader::unHamByte(byte buffer[]){
         s3 = (buffer[n+3])^(buffer[n+4])^(buffer[n+5])^buffer[n+6];
         res = s1 | (s2 << 1) | (s3 << 2);
         if(res){ // toggle the erroneous bit
-            Serial.println("switched a bit!!");
-            if (buffer[res-1]) {
-                buffer[res-1] = 0/*!buffer[res-1]*/;
+            Serial.println("switching a bit!!");
+            if (buffer[n+res-1]) {
+                buffer[n+res-1] = 0;
             }
             else {
-                buffer[res-1] = 1/*!buffer[res-1]*/;
+                buffer[n+res-1] = 1;
             }
         }
     }
