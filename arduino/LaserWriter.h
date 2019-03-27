@@ -22,12 +22,14 @@ public:
 
 	void sendBuffer(byte buffer[], int bufferSize);
 	void sendHeader();
+    void sendHeadSize(int bufferSize);
 	byte * charToHam(char inChar);
 
 	void pulseHigh();
 	void pulseLow();
 
     void readFromUser();
+
 
 
 private:

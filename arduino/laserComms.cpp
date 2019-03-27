@@ -46,11 +46,18 @@ void serialPrintBuffer(byte * buffer, int bufferSize) {
 }
 
 
+/******************************************************************************
+ *  @brief: sendHamFromUser
+ *  funciton for laser control to send hamming codes to a reciever
+ *****************************************************************************/
 void sendHamFromUser(LaserWriter laser) {
     byte * buffer;
     int hamBufferSize = 14;
     char inChar = Serial.read();
     buffer = laser.charToHam(inChar);
+    // flip a bit
+    buffer[6] = !buffer[6];
+    buffer[9] = !buffer[9];
     // send message
     laser.sendHeader();
     laser.sendBuffer(buffer, hamBufferSize);
@@ -60,13 +67,21 @@ void sendHamFromUser(LaserWriter laser) {
 }
 
 
+/******************************************************************************
+ *  @brief: recvHamFromUser
+ *  This funciton controls the useage of the sensor class to receive hamming
+    codes.
+ *****************************************************************************/
 void recvHamFromUser(SensorReader sensor) {
+    // instanciate buffer for the hamming code and resulting char
     byte * buffer;
     byte * charBuffer;
     int hamBufferSize = 14;
     int charBufferSize = 8;
+    // read in hamming buffer
     buffer = sensor.readInBuffer(hamBufferSize);
     serialPrintBuffer(buffer, hamBufferSize);
+    // convert buffer to char
     charBuffer = sensor.unHamByte(buffer);
     serialPrintBuffer(charBuffer, charBufferSize);
     free(buffer);

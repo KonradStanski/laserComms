@@ -49,13 +49,16 @@ void LaserWriter::sendBuffer(byte buffer[], int bufferSize) {
  *****************************************************************************/
 void LaserWriter::sendHeader() {
     for (int i = 0; i < 2; i++) {
-        digitalWrite(laserPin, HIGH);
-        delay(pulsePeriod);
+        pulseHigh();
     }
 }
 
 
-
+/******************************************************************************
+ *  @brief: charToHam
+ *  Given a character, return a 14 bit array of the hamming code for the first
+    4 bits of the char concatenated with the last 4.
+ *****************************************************************************/
 byte * LaserWriter::charToHam(char inChar) {
     int xn[8];
     int intVal = (int)inChar;
@@ -97,6 +100,30 @@ byte * LaserWriter::charToHam(char inChar) {
     return buffer;
 }
 
+
+/******************************************************************************
+ *  @brief: send
+ *
+ *****************************************************************************/
+void LaserWriter::sendHeadSize(int bufferSize) {
+    for (int i = 0; i < 8; i++) {
+        if (bitRead(bufferSize, i)) {
+            pulseHigh();
+        }
+        else {
+            pulseLow();
+        }
+    }
+}
+
+
+/******************************************************************************
+ *  @brief:
+ *
+ *****************************************************************************/
+// void sendTail(byte buffer[], int bufferSize) {
+
+// }
 
 void LaserWriter::pulseHigh() {
     // pulse a "1"

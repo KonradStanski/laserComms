@@ -22,6 +22,7 @@ public:
     byte* unHamByte(byte* buffer);
     byte* readInBuffer(int bufferSize); // read in buffer from sensor
     bool recvHeader(); // returns true if message commence is recieved
+    int SensorReader::recvHeadSize();
 
 private:
 	char sensorPin; // pin to which sensor is atached to

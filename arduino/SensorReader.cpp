@@ -27,6 +27,7 @@ SensorReader::SensorReader(char recvSensorPin, uint32_t recvPulsePeriod, int rec
 SensorReader::~SensorReader() {
 }
 
+
 /******************************************************************************
  *  @brief: unHamByte
  *  Accepts a byte array, and does the math as described in this
@@ -44,7 +45,8 @@ byte* SensorReader::unHamByte(byte buffer[]){
         s3 = (buffer[n+3])^(buffer[n+4])^(buffer[n+5])^buffer[n+6];
         res = s1 | (s2 << 1) | (s3 << 2);
         if(res){ // toggle the erroneous bit
-            Serial.println("switching a bit!!");
+            Serial.print("switching bit: ");
+            Serial.println(n+res-1);
             if (buffer[n+res-1]) {
                 buffer[n+res-1] = 0;
             }
@@ -124,41 +126,29 @@ bool SensorReader::recvHeader() {
 }
 
 
-// int SensorReader::recvHeadSize() {
-//     //read in 11 then read in 8 bit buffer size
-//     // begin reading in code
-//     if(analogRead(sensorPin) > threshold) {
-//         Serial.println("might recieve header!");
-//         // read in 11 to start transmission
-//         for (int i = 0; i < 2; i++) {
-//             if (!(analogRead(sensorPin) > threshold)) {
-//                 // recieved 0
-//                 Serial.println("received 0 exit condition");
-//                 return 0;
-//             }
-//             else{
-//                 // recieved 1
-//                 delay(pulsePeriod);
-//             }
-//         }
-//         // delay half period
-//         delay(pulsePeriod/2);
-//         // read in 8 bit integer value little endian for buffer size
-//         int bufferSize = 0;
-//         for(int i = 0; i < 8; i++) {
-//             if (analogRead(sensorPin) > threshold) {
-//                 bufferSize += bit(i);
-//             }
-//             delay(pulsePeriod);
-//         }
-//         // did not read an initial value
-//         Serial.println("recieved header!");
-//         return bufferSize;
-//     }
-//     return 0;
-// }
+/******************************************************************************
+ *  @brief: recvHeadSize
+ *  this functin reads in a 8 bit buffer to determine the size of the data
+    payload.
+ *****************************************************************************/
+int SensorReader::recvHeadSize() {
+    // read in 8 bit integer value little endian for buffer size
+    int bufferSize = 0;
+    for(int i = 0; i < 8; i++) {
+        if (analogRead(sensorPin) > threshold) {
+            bufferSize += bit(i);
+        }
+        delay(pulsePeriod);
+    }
+    return bufferSize;
+}
 
 
+/******************************************************************************
+ *  @brief: recvTail
+ *  this function receives a tail consisting of a checksum to verify that the
+    data transmission was correct.
+ *****************************************************************************/
 // bool SensorReader::recvTail(byte buffer[], int bufferSize) {
 
 // }
