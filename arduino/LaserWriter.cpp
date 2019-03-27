@@ -55,6 +55,46 @@ void LaserWriter::sendHeader() {
 
 
 /******************************************************************************
+ *  @brief: sendHeadSize
+ *  sends a 8 bit integer that describes the size of the payload
+ *****************************************************************************/
+void LaserWriter::sendHeadSize(int bufferSize) {
+    for (int i = 0; i < 8; i++) {
+        if (bitRead(bufferSize, i)) {
+            pulseHigh();
+        }
+        else {
+            pulseLow();
+        }
+    }
+}
+
+
+/******************************************************************************
+ *  @brief:
+ *
+ *****************************************************************************/
+// void sendTail(byte buffer[], int bufferSize) {
+
+// }
+
+
+void LaserWriter::pulseHigh() {
+    // pulse a "1"
+    digitalWrite(laserPin, HIGH);
+    delay(pulsePeriod);
+    digitalWrite(laserPin, LOW);
+}
+
+
+void LaserWriter::pulseLow() {
+    // pulse a "0"
+    digitalWrite(laserPin, LOW);
+    delay(pulsePeriod);
+}
+
+
+/******************************************************************************
  *  @brief: charToHam
  *  Given a character, return a 14 bit array of the hamming code for the first
     4 bits of the char concatenated with the last 4.
@@ -99,43 +139,3 @@ byte * LaserWriter::charToHam(char inChar) {
     buffer[13] = xn[4];
     return buffer;
 }
-
-
-/******************************************************************************
- *  @brief: send
- *
- *****************************************************************************/
-void LaserWriter::sendHeadSize(int bufferSize) {
-    for (int i = 0; i < 8; i++) {
-        if (bitRead(bufferSize, i)) {
-            pulseHigh();
-        }
-        else {
-            pulseLow();
-        }
-    }
-}
-
-
-/******************************************************************************
- *  @brief:
- *
- *****************************************************************************/
-// void sendTail(byte buffer[], int bufferSize) {
-
-// }
-
-void LaserWriter::pulseHigh() {
-    // pulse a "1"
-    digitalWrite(laserPin, HIGH);
-    delay(pulsePeriod);
-    digitalWrite(laserPin, LOW);
-}
-
-
-void LaserWriter::pulseLow() {
-    // pulse a "0"
-    digitalWrite(laserPin, LOW);
-    delay(pulsePeriod);
-}
-

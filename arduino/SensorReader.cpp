@@ -29,48 +29,6 @@ SensorReader::~SensorReader() {
 
 
 /******************************************************************************
- *  @brief: unHamByte
- *  Accepts a byte array, and does the math as described in this
- *  https://en.wikipedia.org/wiki/Hamming(7,4) article, as suggested by Zac. This
- *  code is able to correct single bit flips. However, multiple bit flips cannot
- *  be handled here.
- *****************************************************************************/
-byte* SensorReader::unHamByte(byte buffer[]){
-    for(int i = 0; i < 2; i++){
-        bool s1, s2, s3;
-        int n=i*7, res = 0b0;
-        // compute the "syndrome" values:
-        s1 = (buffer[n+0])^(buffer[n+2])^(buffer[n+4])^buffer[n+6];
-        s2 = (buffer[n+1])^(buffer[n+2])^(buffer[n+5])^buffer[n+6];
-        s3 = (buffer[n+3])^(buffer[n+4])^(buffer[n+5])^buffer[n+6];
-        res = s1 | (s2 << 1) | (s3 << 2);
-        if(res){ // toggle the erroneous bit
-            Serial.print("switching bit: ");
-            Serial.println(n+res-1);
-            if (buffer[n+res-1]) {
-                buffer[n+res-1] = 0;
-            }
-            else {
-                buffer[n+res-1] = 1;
-            }
-        }
-    }
-    byte *outBuffer = (byte*)malloc(sizeof(byte[8]));
-
-    outBuffer[0] = buffer[6];
-    outBuffer[1] = buffer[5];
-    outBuffer[2] = buffer[4];
-    outBuffer[3] = buffer[2];
-
-    outBuffer[4] = buffer[13];
-    outBuffer[5] = buffer[12];
-    outBuffer[6] = buffer[11];
-    outBuffer[7] = buffer[9];
-    return outBuffer;
-}
-
-
-/******************************************************************************
  *  @brief: readInBuffer
  *  reads in a char array of '1' or '0' of size bufferSize and
     returns a pointer to a char array.
@@ -152,3 +110,45 @@ int SensorReader::recvHeadSize() {
 // bool SensorReader::recvTail(byte buffer[], int bufferSize) {
 
 // }
+
+
+/******************************************************************************
+ *  @brief: unHamByte
+ *  Accepts a byte array, and does the math as described in this
+ *  https://en.wikipedia.org/wiki/Hamming(7,4) article, as suggested by Zac. This
+ *  code is able to correct single bit flips. However, multiple bit flips cannot
+ *  be handled here.
+ *****************************************************************************/
+byte* SensorReader::unHamByte(byte buffer[]){
+    for(int i = 0; i < 2; i++){
+        bool s1, s2, s3;
+        int n=i*7, res = 0b0;
+        // compute the "syndrome" values:
+        s1 = (buffer[n+0])^(buffer[n+2])^(buffer[n+4])^buffer[n+6];
+        s2 = (buffer[n+1])^(buffer[n+2])^(buffer[n+5])^buffer[n+6];
+        s3 = (buffer[n+3])^(buffer[n+4])^(buffer[n+5])^buffer[n+6];
+        res = s1 | (s2 << 1) | (s3 << 2);
+        if(res){ // toggle the erroneous bit
+            Serial.print("switching bit: ");
+            Serial.println(n+res-1);
+            if (buffer[n+res-1]) {
+                buffer[n+res-1] = 0;
+            }
+            else {
+                buffer[n+res-1] = 1;
+            }
+        }
+    }
+    byte *outBuffer = (byte*)malloc(sizeof(byte[8]));
+
+    outBuffer[0] = buffer[6];
+    outBuffer[1] = buffer[5];
+    outBuffer[2] = buffer[4];
+    outBuffer[3] = buffer[2];
+
+    outBuffer[4] = buffer[13];
+    outBuffer[5] = buffer[12];
+    outBuffer[6] = buffer[11];
+    outBuffer[7] = buffer[9];
+    return outBuffer;
+}
