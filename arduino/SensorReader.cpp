@@ -49,8 +49,6 @@ byte * SensorReader::readInBuffer(int bufferSize) {
             delay(pulsePeriod);
         }
     }
-    // Serial.println(" : return");
-    // buffer = unHamByte(buffer);
     return buffer;
 }
 
@@ -64,8 +62,6 @@ bool SensorReader::waitForAck(){
     delay(pulsePeriod);
     out |= (in << i);
   }
-  Serial.println("HELLLLOOOO");
-  Serial.println(out);
   if(out == 0xFE){
     return stSuccess;
   }else{
@@ -147,14 +143,7 @@ byte* SensorReader::unHamByte(byte buffer[]){
         s3 = (buffer[n+3])^(buffer[n+4])^(buffer[n+5])^buffer[n+6];
         res = s1 | (s2 << 1) | (s3 << 2);
         if(res){ // toggle the erroneous bit
-            Serial.print("switching bit: ");
-            Serial.println(n+res-1);
-            if (buffer[n+res-1]) {
-                buffer[n+res-1] = 0;
-            }
-            else {
-                buffer[n+res-1] = 1;
-            }
+            buffer[n+res-1] = !buffer[n+res-1];
         }
     }
     byte *outBuffer = (byte*)malloc(sizeof(byte[8]));

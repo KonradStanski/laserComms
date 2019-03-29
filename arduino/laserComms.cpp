@@ -50,23 +50,40 @@ void serialPrintBuffer(byte * buffer, int bufferSize) {
  *  @brief: sendHamFromUser
  *  funciton for laser control to send hamming codes to a reciever
  *****************************************************************************/
+// void sendHamFromUser(LaserWriter laser, SensorReader sensor) {
+//     byte * buffer;
+//     int hamBufferSize = 14;
+//     char inChar = Serial.read();
+//
+//     // flip a bit
+//     // send message
+//     do{
+//       laser.sendHeader();
+//       laser.sendBuffer(buffer, hamBufferSize);
+//       serialPrintBuffer(buffer, hamBufferSize);
+//       delay(60); // needed to avoid overlap of signal
+//     }while(!sensor.waitForAck());
+//     free(buffer);
+// }
+
 void sendHamFromUser(LaserWriter laser, SensorReader sensor) {
-    byte * buffer;
+  Serial.setTimeout(5000);
     int hamBufferSize = 14;
-    char inChar = Serial.read();
-    buffer = laser.charToHam(inChar);
-    // flip a bit
-    // send message
-    do{
-      laser.sendHeader();
-      laser.sendBuffer(buffer, hamBufferSize);
-      serialPrintBuffer(buffer, hamBufferSize);
-      delay(60); // needed to avoid overlap of signal
-    }while(!sensor.waitForAck());
-    free(buffer);
+    String outgoingString = Serial.readStringUntil('\n');
+    char outgoing[outgoingString.length()+1];
+    strcpy(outgoing, outgoingString.c_str());
+    for(int i= 0; i < outgoingString.length()-1; i++){
+      char outchar = outgoing[i];
+      byte* buffer = laser.charToHam(outchar);
+      do{
+        laser.sendHeader();
+        laser.sendBuffer(buffer, hamBufferSize);
+        serialPrintBuffer(buffer, hamBufferSize);
+        delay(60); // needed to avoid overlap of signal
+      }while(!sensor.waitForAck());
+      free(buffer);
+    }
 }
-
-
 /******************************************************************************
  *  @brief: recvHamFromUser
  *  This funciton controls the useage of the sensor class to receive hamming
@@ -79,6 +96,7 @@ void recvHamFromUser(SensorReader sensor, LaserWriter laser) {
     int hamBufferSize = 14;
     int charBufferSize = 8;
     // read in hamming buffer
+
     buffer = sensor.readInBuffer(hamBufferSize);
     serialPrintBuffer(buffer, hamBufferSize);
     // convert buffer to char
