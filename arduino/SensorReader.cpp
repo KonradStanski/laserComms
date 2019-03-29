@@ -54,6 +54,24 @@ byte * SensorReader::readInBuffer(int bufferSize) {
     return buffer;
 }
 
+bool SensorReader::waitForAck(){
+  int in = 0b0, out = 0b0, temp;
+  for(int i = 0; i < 8; i ++){
+    temp = analogRead(sensorPin);
+    if (temp > threshold) {
+        in = 1;
+    }else in = 0;
+    delay(pulsePeriod);
+    out |= (in << i);
+  }
+  Serial.println("HELLLLOOOO");
+  Serial.println(out);
+  if(out == 0xFE){
+    return stSuccess;
+  }else{
+    return stFail;
+  }
+}
 
 /******************************************************************************
  *  @brief: recvHeader

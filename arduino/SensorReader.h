@@ -9,7 +9,8 @@
 #define _SENSORREADER_H_
 
 #include <Arduino.h>
-
+#define stSuccess 1
+#define stFail 0
 
 /******************************************************************************
  *  @brief: SensorReader
@@ -22,8 +23,8 @@ public:
     byte* unHamByte(byte* buffer);
     byte* readInBuffer(int bufferSize); // read in buffer from sensor
     bool recvHeader(); // returns true if message commence is recieved
-    int SensorReader::recvHeadSize();
-
+    int recvHeadSize();
+    bool waitForAck();
 private:
 	char sensorPin; // pin to which sensor is atached to
     uint32_t pulsePeriod; // period to wait inbetween receiving signals

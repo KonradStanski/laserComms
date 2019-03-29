@@ -7,7 +7,8 @@
 
 #ifndef _LASERWRITER_H_
 #define _LASERWRITER_H_
-
+#define stSuccess 1
+#define stFail 0
 #include <Arduino.h>
 
 
@@ -19,7 +20,7 @@ class LaserWriter {
 public:
     LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod); // constructor
     ~LaserWriter(); // destructor
-
+  void sendACK( void );
 	void sendBuffer(byte buffer[], int bufferSize);
 	void sendHeader();
     void sendHeadSize(int bufferSize);

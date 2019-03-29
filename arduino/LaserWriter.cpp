@@ -93,7 +93,11 @@ void LaserWriter::pulseLow() {
     delay(pulsePeriod);
 }
 
-
+void LaserWriter::sendACK( void ) { // let ack be 0xF
+  for(int i = 0; i < 8; i++){
+    pulseHigh();
+  }
+}
 /******************************************************************************
  *  @brief: charToHam
  *  Given a character, return a 14 bit array of the hamming code for the first

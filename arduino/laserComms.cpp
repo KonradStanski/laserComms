@@ -50,19 +50,19 @@ void serialPrintBuffer(byte * buffer, int bufferSize) {
  *  @brief: sendHamFromUser
  *  funciton for laser control to send hamming codes to a reciever
  *****************************************************************************/
-void sendHamFromUser(LaserWriter laser) {
+void sendHamFromUser(LaserWriter laser, SensorReader sensor) {
     byte * buffer;
     int hamBufferSize = 14;
     char inChar = Serial.read();
     buffer = laser.charToHam(inChar);
     // flip a bit
-    buffer[6] = !buffer[6];
-    buffer[9] = !buffer[9];
     // send message
-    laser.sendHeader();
-    laser.sendBuffer(buffer, hamBufferSize);
-    serialPrintBuffer(buffer, hamBufferSize);
-    delay(60); // needed to avoid overlap of signal
+    do{
+      laser.sendHeader();
+      laser.sendBuffer(buffer, hamBufferSize);
+      serialPrintBuffer(buffer, hamBufferSize);
+      delay(60); // needed to avoid overlap of signal
+    }while(!sensor.waitForAck());
     free(buffer);
 }
 
@@ -72,7 +72,7 @@ void sendHamFromUser(LaserWriter laser) {
  *  This funciton controls the useage of the sensor class to receive hamming
     codes.
  *****************************************************************************/
-void recvHamFromUser(SensorReader sensor) {
+void recvHamFromUser(SensorReader sensor, LaserWriter laser) {
     // instanciate buffer for the hamming code and resulting char
     byte * buffer;
     byte * charBuffer;
@@ -86,6 +86,7 @@ void recvHamFromUser(SensorReader sensor) {
     serialPrintBuffer(charBuffer, charBufferSize);
     free(buffer);
     free(charBuffer);
+    laser.sendACK();
 }
 
 
@@ -108,10 +109,11 @@ int main() {
 
     while(true) {
         if (Serial.available()) {
-            sendHamFromUser(laser);
+            sendHamFromUser(laser, sensor);
         }
         if (sensor.recvHeader()) {
-            recvHamFromUser(sensor);
+            recvHamFromUser(sensor, laser);
+
         }
     }
     return 0;
