@@ -59,7 +59,7 @@ void sendHamFromUser(LaserWriter laser, SensorReader sensor) {
       laser.sendHeader();
       laser.sendBuffer(buffer, hamBufferSize);
       serialPrintBuffer(buffer, hamBufferSize);
-      delay(80); // needed to avoid overlap of signal
+      delay(40); // needed to avoid overlap of signal
     }while(!sensor.waitForAck());
     free(buffer);
 }

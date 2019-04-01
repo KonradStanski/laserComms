@@ -62,7 +62,8 @@ bool SensorReader::waitForAck(){
     delay(pulsePeriod);
     out |= (in << i);
   }
-  if(out == 0xFE){
+  Serial.println(out);
+  if(out > 0x7){
     return stSuccess;
   }else{
     return stFail;
