@@ -54,7 +54,7 @@ void sendHamFromUser(LaserWriter laser, SensorReader sensor) {
     byte * buffer;
     int hamBufferSize = 14;
     char inChar = Serial.read();
-
+    buffer = laser.charToHam(inChar);
     // flip a bit
     // send message
     do{
@@ -65,25 +65,31 @@ void sendHamFromUser(LaserWriter laser, SensorReader sensor) {
     }while(!sensor.waitForAck());
     free(buffer);
 }
-//
-// void sendHamFromUser(LaserWriter laser, SensorReader sensor) {
-//   Serial.setTimeout(5000);
-//     int hamBufferSize = 14;
-//     String outgoingString = Serial.readStringUntil('\n');
-//     char outgoing[outgoingString.length()+1];
-//     strcpy(outgoing, outgoingString.c_str());
-//     for(int i= 0; i < outgoingString.length()-1; i++){
-//       char outchar = outgoing[i];
-//       byte* buffer = laser.charToHam(outchar);
-//       do{
-//         laser.sendHeader();
-//         laser.sendBuffer(buffer, hamBufferSize);
-//         serialPrintBuffer(buffer, hamBufferSize);
-//         delay(60); // needed to avoid overlap of signal
-//       }while(!sensor.waitForAck());
-//       free(buffer);
-//     }
-// }
+
+
+/******************************************************************************
+ *  @brief: sendMessage
+ *  This function reads in a char buffer until a newline and then send the
+    entire char buffer using hamming codes and a ack handshake
+ *****************************************************************************/
+void sendMessage(LaserWriter laser, SensorReader sensor) {
+    String message;
+    int hamBufferSize = 14;
+    message = Serial.readStringUntil('\n');
+    for (int i = 0; i < message.length()-1; i++) {
+        char car = message.charAt(i);
+        byte * buffer = laser.charToHam(car);
+        do{
+          laser.sendHeader();
+          laser.sendBuffer(buffer, hamBufferSize);
+          serialPrintBuffer(buffer, hamBufferSize);
+          delay(60); // needed to avoid overlap of signal
+        }while(!sensor.waitForAck());
+        free(buffer);
+    }
+}
+
+
 /******************************************************************************
  *  @brief: recvHamFromUser
  *  This funciton controls the useage of the sensor class to receive hamming
@@ -112,6 +118,7 @@ void recvHamFromUser(SensorReader sensor, LaserWriter laser) {
 void setup() {
     init();
     Serial.begin(9600);
+    Serial.setTimeout(4000);
     pinMode(sensorPin, INPUT);
     pinMode(laserPin, OUTPUT);
     digitalWrite(laserPin, LOW);
@@ -127,7 +134,8 @@ int main() {
 
     while(true) {
         if (Serial.available()) {
-            sendHamFromUser(laser, sensor);
+            // sendHamFromUser(laser, sensor);
+            sendMessage(laser, sensor);
         }
         if (sensor.recvHeader()) {
             recvHamFromUser(sensor, laser);
