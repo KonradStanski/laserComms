@@ -78,12 +78,10 @@ bool SensorReader::recvHeader() {
     //read in 0xFF
     // begin reading in code
     if(analogRead(sensorPin) > threshold) {
-        Serial.println("might recieve header!");
         delay(pulsePeriod/2); // delay to offset communications
         for (int i = 0; i < 2; i++) {
             if (!(analogRead(sensorPin) > threshold)) {
                 // recieved 0
-                Serial.println("received 0 exit condition");
                 return false;
             }
             else{
@@ -91,7 +89,6 @@ bool SensorReader::recvHeader() {
                 delay(pulsePeriod);
             }
         }
-        Serial.println("recieved header!");
         return true;
     }
     return false;
