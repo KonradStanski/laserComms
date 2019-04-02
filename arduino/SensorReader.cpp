@@ -95,16 +95,17 @@ bool SensorReader::recvHeader() {
     return false;
 }
 
+/******************************************************************************
+ *  @brief: recvPair
+ *  Read in the pairity check from the sender.
+ *****************************************************************************/
 int SensorReader::recvPair(){
   int pair = 0;
-     //delay(pulsePeriod/2);
     for(int i = 0; i < 3; i++){
       if(analogRead(sensorPin) > threshold){
         pair |= (1 << i);
-        //Serial.println("one");
         delay(pulsePeriod);
       }else{
-        //Serial.println("zeero");
         pair |= (0 << i);
         delay(pulsePeriod);
       }

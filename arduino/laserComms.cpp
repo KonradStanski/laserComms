@@ -8,13 +8,11 @@
 #include <Arduino.h>
 #include "LaserWriter.h"
 #include "SensorReader.h"
-
 // pin definitions
 int laserPin = 4;
 char sensorPin = A7;
 uint32_t pulsePeriod = 10; //milliseconds
 int threshold = 930;
-
 
 /******************************************************************************
  *  @brief: serialPrintBuffer
@@ -43,7 +41,6 @@ void serialPrintBuffer(byte * buffer, int bufferSize) {
     Serial.println();
 }
 
-
 /******************************************************************************
  *  @brief: sendHamFromUser
  *  funciton for laser control to send hamming codes to a reciever
@@ -64,7 +61,6 @@ void sendHamFromUser(LaserWriter laser, SensorReader sensor) {
     free(buffer);
 }
 
-
 /******************************************************************************
  *  @brief: sendMessage
  *  This function reads in a char buffer until a newline and then send the
@@ -77,14 +73,13 @@ void sendMessage(LaserWriter laser, SensorReader sensor) {
     for (int i = 0; i < message.length()-1; i++) {
         int pairity = 0;
         char car = message.charAt(i);
-        Serial.print("car is: ");
-        Serial.println((int)car);
+        // find the number of 1's in the message for pairity checking.
         for(int j = 0; j < 8; j++){
           if(bitRead((int) car, j)){
             pairity++;
           }
         }
-        Serial.println(pairity);
+        delay(80); // TBH just because I got rid of a bunch of prints
         byte * buffer = laser.charToHam(car);
         do{
           laser.sendHeader();
@@ -96,7 +91,6 @@ void sendMessage(LaserWriter laser, SensorReader sensor) {
         free(buffer);
     }
 }
-
 
 /******************************************************************************
  *  @brief: recvHamFromUser
@@ -118,9 +112,6 @@ void recvHamFromUser(SensorReader sensor, LaserWriter laser, int pairity) {
         myPair ++;
       }
     }
-    Serial.print(myPair);
-    Serial.print( " ");
-    Serial.println(pairity);
     if(myPair == pairity){
       laser.sendACK();
       serialPrintBuffer(charBuffer, charBufferSize);
@@ -128,7 +119,6 @@ void recvHamFromUser(SensorReader sensor, LaserWriter laser, int pairity) {
     free(buffer);
     free(charBuffer);
 }
-
 
 // Arduino Setup Configuration
 void setup() {
@@ -140,14 +130,12 @@ void setup() {
     digitalWrite(laserPin, LOW);
 }
 
-
 // main running function
 int main() {
     setup();
     //Instanciate a laser writer and a sensor reader
     LaserWriter laser(laserPin, pulsePeriod);
     SensorReader sensor(sensorPin, pulsePeriod, threshold);
-
     while(true) {
         if (Serial.available()) {
             // sendHamFromUser(laser, sensor);

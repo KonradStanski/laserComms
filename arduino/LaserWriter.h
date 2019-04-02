@@ -11,28 +11,23 @@
 #define stFail 0
 #include <Arduino.h>
 
-
 /******************************************************************************
  *  @brief: LaserWriter
  *  Class used to interact with the laser
  *****************************************************************************/
 class LaserWriter {
 public:
-    LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod); // constructor
-    ~LaserWriter(); // destructor
+  LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod); // constructor
+  ~LaserWriter(); // destructor
   void sendACK( void );
 	void sendBuffer(byte buffer[], int bufferSize);
 	void sendHeader();
   void sendHeadSize(int bufferSize);
   void sendPair(int pair);
 	byte * charToHam(char inChar);
-
 	void pulseHigh();
 	void pulseLow();
-
-    void readFromUser();
-
-
+  void readFromUser();
 
 private:
 	uint32_t pulsePeriod;

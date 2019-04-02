@@ -8,7 +8,6 @@
 #include "LaserWriter.h"
 #include <Arduino.h>
 
-
 /******************************************************************************
  *  @brief: LaserWriter // constructor //
  *  instantiate LaserWriter instance
@@ -18,7 +17,6 @@ LaserWriter::LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod){
     laserPin = recvLaserPin;
 }
 
-
 /******************************************************************************
  *  @brief: LaserWriter // destructor //
  *  destruct LaserWriter instance
@@ -26,9 +24,8 @@ LaserWriter::LaserWriter(int recvLaserPin, uint32_t recvPulsePeriod){
 LaserWriter::~LaserWriter(){
 }
 
-
 /******************************************************************************
- *  @brief: outPutMessage
+ *  @brief: sendBuffer
  *  Given a message, write it to the laser.
  *****************************************************************************/
 void LaserWriter::sendBuffer(byte buffer[], int bufferSize) {
@@ -42,9 +39,8 @@ void LaserWriter::sendBuffer(byte buffer[], int bufferSize) {
     }
 }
 
-
 /******************************************************************************
- *  @brief: outPutMessage
+ *  @brief: sendHeader
  *  Given a message, write it to the laser.
  *****************************************************************************/
 void LaserWriter::sendHeader() {
@@ -53,15 +49,15 @@ void LaserWriter::sendHeader() {
     }
 }
 
+/******************************************************************************
+ *  @brief: sendPair
+ *  Send the pairity bits to the reciever.
+ *****************************************************************************/
 void LaserWriter::sendPair(int pairity){
-  Serial.print("pair should be : ");
-  Serial.println(pairity);
   for(int i = 0; i < 3; i++){
     if((pairity >> i) & 0b01){
-      Serial.println("one");
       pulseHigh();
     }else{
-      Serial.println("zero");
       pulseLow();
     }
   }
@@ -82,15 +78,7 @@ void LaserWriter::sendHeadSize(int bufferSize) {
     }
 }
 
-
-/******************************************************************************
- *  @brief:
- *
- *****************************************************************************/
-// void sendTail(byte buffer[], int bufferSize) {
-
-// }
-
+// helper functions:
 
 void LaserWriter::pulseHigh() {
     // pulse a "1"
@@ -98,7 +86,6 @@ void LaserWriter::pulseHigh() {
     delay(pulsePeriod);
     digitalWrite(laserPin, LOW);
 }
-
 
 void LaserWriter::pulseLow() {
     // pulse a "0"
@@ -111,6 +98,7 @@ void LaserWriter::sendACK( void ) { // let ack be 0xF
     pulseHigh();
   }
 }
+
 /******************************************************************************
  *  @brief: charToHam
  *  Given a character, return a 14 bit array of the hamming code for the first
