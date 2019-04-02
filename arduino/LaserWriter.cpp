@@ -54,10 +54,14 @@ void LaserWriter::sendHeader() {
 }
 
 void LaserWriter::sendPair(int pairity){
-  for(int i = 0; i < 8; i++){
+  Serial.print("pair should be : ");
+  Serial.println(pairity);
+  for(int i = 0; i < 3; i++){
     if((pairity >> i) & 0b01){
+      Serial.println("one");
       pulseHigh();
     }else{
+      Serial.println("zero");
       pulseLow();
     }
   }

@@ -77,11 +77,14 @@ void sendMessage(LaserWriter laser, SensorReader sensor) {
     for (int i = 0; i < message.length()-1; i++) {
         int pairity = 0;
         char car = message.charAt(i);
+        Serial.print("car is: ");
+        Serial.println((int)car);
         for(int j = 0; j < 8; j++){
-          if(bitRead((int) car, i)){
-            pairity |= (1 << j);
-          }else pairity |= (0 << j);
+          if(bitRead((int) car, j)){
+            pairity++;
+          }
         }
+        Serial.println(pairity);
         byte * buffer = laser.charToHam(car);
         do{
           laser.sendHeader();
@@ -103,7 +106,7 @@ void sendMessage(LaserWriter laser, SensorReader sensor) {
 void recvHamFromUser(SensorReader sensor, LaserWriter laser, int pairity) {
     // instanciate buffer for the hamming code and resulting char
     byte * buffer, * charBuffer;
-    int hamBufferSize = 14, charBufferSize = 8, myPair;
+    int hamBufferSize = 14, charBufferSize = 8, myPair = 0;
     // read in hamming buffer
 
     buffer = sensor.readInBuffer(hamBufferSize);
