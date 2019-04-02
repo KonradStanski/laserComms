@@ -24,6 +24,7 @@ public:
     byte* readInBuffer(int bufferSize); // read in buffer from sensor
     bool recvHeader(); // returns true if message commence is recieved
     int recvHeadSize();
+    int recvPair();
     bool waitForAck();
 private:
 	char sensorPin; // pin to which sensor is atached to

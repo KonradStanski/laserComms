@@ -75,10 +75,17 @@ void sendMessage(LaserWriter laser, SensorReader sensor) {
     int hamBufferSize = 14;
     message = Serial.readStringUntil('\n');
     for (int i = 0; i < message.length()-1; i++) {
+        int pairity = 0;
         char car = message.charAt(i);
+        for(int j = 0; j < 8; j++){
+          if(bitRead((int) car, i)){
+            pairity |= (1 << j);
+          }else pairity |= (0 << j);
+        }
         byte * buffer = laser.charToHam(car);
         do{
           laser.sendHeader();
+          laser.sendPair(pairity);
           laser.sendBuffer(buffer, hamBufferSize);
           serialPrintBuffer(buffer, hamBufferSize);
           delay(60); // needed to avoid overlap of signal
@@ -93,22 +100,27 @@ void sendMessage(LaserWriter laser, SensorReader sensor) {
  *  This funciton controls the useage of the sensor class to receive hamming
     codes.
  *****************************************************************************/
-void recvHamFromUser(SensorReader sensor, LaserWriter laser) {
+void recvHamFromUser(SensorReader sensor, LaserWriter laser, int pairity) {
     // instanciate buffer for the hamming code and resulting char
-    byte * buffer;
-    byte * charBuffer;
-    int hamBufferSize = 14;
-    int charBufferSize = 8;
+    byte * buffer, * charBuffer;
+    int hamBufferSize = 14, charBufferSize = 8, myPair;
     // read in hamming buffer
 
     buffer = sensor.readInBuffer(hamBufferSize);
     serialPrintBuffer(buffer, hamBufferSize);
     // convert buffer to char
     charBuffer = sensor.unHamByte(buffer);
-    serialPrintBuffer(charBuffer, charBufferSize);
+    for(int i = 0; i < 8; i++){
+      if(charBuffer[i] == 1){
+        myPair ++;
+      }
+    }
+    if(myPair == pairity){
+      laser.sendACK();
+      serialPrintBuffer(charBuffer, charBufferSize);
+    }
     free(buffer);
     free(charBuffer);
-    laser.sendACK();
 }
 
 
@@ -136,8 +148,7 @@ int main() {
             sendMessage(laser, sensor);
         }
         if (sensor.recvHeader()) {
-            recvHamFromUser(sensor, laser);
-
+            recvHamFromUser(sensor, laser, sensor.recvPair());
         }
     }
     return 0;

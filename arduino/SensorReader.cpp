@@ -63,7 +63,7 @@ bool SensorReader::waitForAck(){
     out |= (in << i);
   }
   Serial.println(out);
-  if(out > 0x7){
+  if(out >= 0x7){
     return stSuccess;
   }else{
     return stFail;
@@ -95,7 +95,20 @@ bool SensorReader::recvHeader() {
     return false;
 }
 
-
+int SensorReader::recvPair(){
+  int pair = 0b0;
+  if(analogRead(sensorPin) > threshold){
+    delay(pulsePeriod/2);
+    for(int i = 0; i < 3; i++){
+      if(!analogRead(sensorPin) > threshold){
+        pair |= (0 << i);
+      }else{
+        pair |= (1 << i);
+      }
+    }
+  }
+  return pair;
+}
 /******************************************************************************
  *  @brief: recvHeadSize
  *  this functin reads in a 8 bit buffer to determine the size of the data

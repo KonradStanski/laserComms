@@ -23,7 +23,8 @@ public:
   void sendACK( void );
 	void sendBuffer(byte buffer[], int bufferSize);
 	void sendHeader();
-    void sendHeadSize(int bufferSize);
+  void sendHeadSize(int bufferSize);
+  void sendPair(int pair);
 	byte * charToHam(char inChar);
 
 	void pulseHigh();

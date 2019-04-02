@@ -53,6 +53,15 @@ void LaserWriter::sendHeader() {
     }
 }
 
+void LaserWriter::sendPair(int pairity){
+  for(int i = 0; i < 8; i++){
+    if((pairity >> i) & 0b01){
+      pulseHigh();
+    }else{
+      pulseLow();
+    }
+  }
+}
 
 /******************************************************************************
  *  @brief: sendHeadSize
