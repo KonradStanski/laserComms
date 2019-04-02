@@ -99,7 +99,7 @@ int SensorReader::recvPair(){
   int pair = 0b0;
   if(analogRead(sensorPin) > threshold){
     delay(pulsePeriod/2);
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 8; i++){
       if(!analogRead(sensorPin) > threshold){
         pair |= (0 << i);
       }else{

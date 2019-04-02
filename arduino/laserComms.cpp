@@ -115,6 +115,9 @@ void recvHamFromUser(SensorReader sensor, LaserWriter laser, int pairity) {
         myPair ++;
       }
     }
+    Serial.print(myPair);
+    Serial.print( " ");
+    Serial.println(pairity);
     if(myPair == pairity){
       laser.sendACK();
       serialPrintBuffer(charBuffer, charBufferSize);
