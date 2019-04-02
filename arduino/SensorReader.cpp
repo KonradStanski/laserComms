@@ -96,14 +96,19 @@ bool SensorReader::recvHeader() {
 }
 
 int SensorReader::recvPair(){
-  int pair = 0b0;
-  for(int i = 0; i < 3; i++){
-    if(!analogRead(sensorPin) > threshold){
-      pair |= (0 << i);
-    }else{
-      pair |= (1 << i);
+  int pair = 0;
+     //delay(pulsePeriod/2);
+    for(int i = 0; i < 3; i++){
+      if(analogRead(sensorPin) > threshold){
+        pair |= (1 << i);
+        //Serial.println("one");
+        delay(pulsePeriod);
+      }else{
+        //Serial.println("zeero");
+        pair |= (0 << i);
+        delay(pulsePeriod);
+      }
     }
-  }
   return pair;
 }
 /******************************************************************************
