@@ -129,17 +129,6 @@ int SensorReader::recvHeadSize() {
     return bufferSize;
 }
 
-
-/******************************************************************************
- *  @brief: recvTail
- *  this function receives a tail consisting of a checksum to verify that the
-    data transmission was correct.
- *****************************************************************************/
-// bool SensorReader::recvTail(byte buffer[], int bufferSize) {
-
-// }
-
-
 /******************************************************************************
  *  @brief: unHamByte
  *  Accepts a byte array, and does the math as described in this
