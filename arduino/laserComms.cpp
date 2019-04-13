@@ -39,6 +39,7 @@ void serialPrintBuffer(byte * buffer, int bufferSize) {
     Serial.print(intVal);
     Serial.print("] ");
     Serial.println();
+    Serial.println();
 }
 
 /******************************************************************************
@@ -81,6 +82,7 @@ void sendMessage(LaserWriter laser, SensorReader sensor) {
         }
         delay(80); // TBH just because I got rid of a bunch of prints
         byte * buffer = laser.charToHam(car);
+        buffer[8] = !buffer[8]; // for demo of hamming code error checking!!!!!!!!! /////////////////////
         do{
           laser.sendHeader();
           laser.sendPair(pairity);

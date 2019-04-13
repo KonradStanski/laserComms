@@ -32,11 +32,11 @@ Required Files:
         SensorReader.h
         SensorReader.cpp
 
-Functions Defined:
-
 
 
 Notes and Assumptions:
+
+    In this assignment it is assumed that the laser communication system will not incur any timing issues due to poor timing crystals from the arduino.
     Usefull Links:
         http://circuit.ucsd.edu/~yhk/ece154c-spr17/pdfs/ErrorCorrectionI.pdf
         https://en.wikipedia.org/wiki/Hamming(7,4)

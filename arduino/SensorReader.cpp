@@ -62,7 +62,6 @@ bool SensorReader::waitForAck(){
     delay(pulsePeriod);
     out |= (in << i);
   }
-  Serial.println(out);
   if(out >= 0x7){
     return stSuccess;
   }else{
@@ -146,6 +145,8 @@ byte* SensorReader::unHamByte(byte buffer[]){
         s3 = (buffer[n+3])^(buffer[n+4])^(buffer[n+5])^buffer[n+6];
         res = s1 | (s2 << 1) | (s3 << 2);
         if(res){ // toggle the erroneous bit
+            Serial.print("toggled erronous bit");
+            Serial.println(res + n);
             buffer[n+res-1] = !buffer[n+res-1];
         }
     }
